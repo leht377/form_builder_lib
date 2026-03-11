@@ -19,10 +19,10 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy
 } from '@dnd-kit/sortable'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import type { IconName } from '../components/base-icon'
 import BaseIcon from '../components/base-icon'
-import type { EditInputForm, EditSectionForm, Section } from './types/form-builder.types'
+import type { EditInputForm, EditSectionForm, Form, Section } from './types/form-builder.types'
 import NavInputsCreator from './components/nav-inputs-creator'
 import FormAreaDroppable from './components/drag-components/form-area-droppable'
 import SortableSection from './components/drag-components/sortable-section/sortable-section'
@@ -35,10 +35,12 @@ import useListPaletteItems from './hooks/use-list-palette-items'
 import { Loader } from 'lucide-react'
 import RenderDialog from './components/(dialogs)/render-dialog'
 import FormVersionConfirmationDialog from './components/(dialogs)/form-version-confirmation-dialog'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import useCreateNewVersion from './hooks/use-create-new-version'
 
 interface Props {
   id: string
-  template_history_id?: string
+  onCreateNewVersion?: (form: Form) => void
 }
 
 export function OverlayContent({
@@ -75,38 +77,31 @@ export function OverlayContent({
     </div>
   )
 }
-const FormBuilder = ({ id, template_history_id }: Props) => {
+const FormBuilder = ({ id, onCreateNewVersion }: Props) => {
   const { sections, isLoading: isLoadingForm } = useShowForm(id)
+
   const { data } = useApiVerifyFormHaveAnswers(id)
   const hasAnswers = Boolean(data?.attributes.has_answers)
-  const {
-    createSection,
-    reorderSection,
-    deleteSection,
-    updateSection,
-    isLoadingSection
-  } = useManageFormSections({
-    formId: id,
-    hasAnswers
-  })
+  const { createNewVersion, isPending: isCreatingNewVersion } = useCreateNewVersion()
+  const { createSection, reorderSection, deleteSection, updateSection, isLoadingSection } =
+    useManageFormSections({
+      formId: id,
+      hasAnswers
+    })
 
-  const {
-    addQuestionToSection,
-    reorderQuestion,
-    deleteQuestion,
-    updateQuestion,
-    isLoadingInput
-  } = useManageFormInput({
-    formId: id,
-    hasAnswers
-  })
+  const { addQuestionToSection, reorderQuestion, deleteQuestion, updateQuestion, isLoadingInput } =
+    useManageFormInput({
+      formId: id,
+      hasAnswers
+    })
 
   // Estado para el diálogo de confirmación
   const [showConfirmDialog, setShowConfirmDialog] = useState(false)
   const [pendingAction, setPendingAction] = useState<(() => void) | null>(null)
 
   // Deshabilitar drag and drop cuando hay operaciones en curso
-  const isPerformingAction = isLoadingSection || isLoadingInput || isLoadingForm
+  const isPerformingAction =
+    isLoadingSection || isLoadingInput || isLoadingForm || isCreatingNewVersion
 
   const { paletteItems } = useListPaletteItems()
 
@@ -144,6 +139,10 @@ const FormBuilder = ({ id, template_history_id }: Props) => {
     return null
   }
 
+  const handleCreateNewVersion = () => {
+    createNewVersion({ id, has_answers: hasAnswers }, onCreateNewVersion)
+  }
+
   const findSectionByItemId = (itemId: string) =>
     sections.find((section) => section.items.some((item) => item.id === itemId))?.id || null
 
@@ -169,6 +168,7 @@ const FormBuilder = ({ id, template_history_id }: Props) => {
 
       if (isOverSection || isOverItem || isOverFormArea || sections.length === 0) {
         createSection(() => {
+          setPendingAction(() => handleCreateNewVersion)
           setShowConfirmDialog(true)
         })
       } else {
@@ -223,6 +223,7 @@ const FormBuilder = ({ id, template_history_id }: Props) => {
             paletteItem.id.split('-')[1],
             `Campo ${paletteItem.type}`,
             () => {
+              setPendingAction(() => handleCreateNewVersion)
               setShowConfirmDialog(true)
             }
           )
@@ -312,14 +313,6 @@ const FormBuilder = ({ id, template_history_id }: Props) => {
 
   return (
     <>
-      <FormVersionConfirmationDialog
-        open={showConfirmDialog}
-        onOpenChange={setShowConfirmDialog}
-        onConfirm={handleConfirmAction}
-        title='¿Crear nueva versión del formulario?'
-        description='Como este formulario ya tiene respuestas registradas, se creará una nueva versión con los cambios. Las respuestas anteriores no serán modificadas.'
-        isLoading={isLoadingSection || isLoadingInput}
-      />
       <DndContext
         sensors={sensors}
         collisionDetection={pointerWithin}
@@ -328,8 +321,6 @@ const FormBuilder = ({ id, template_history_id }: Props) => {
         onDragEnd={handleDragEnd}
       >
         <div className='min-h-[80vh] relative'>
-          {/* <pre>{`Form id: ${id}`}</pre>
-          <pre>{`Tiene respuestas ${hasAnswers ? 'True' : 'False'}`}</pre> */}
           {/* Overlay de carga cuando hay operaciones en curso */}
           {isPerformingAction && (
             <div className='absolute inset-0 bg-white/60 backdrop-blur-[2px] z-50 flex items-center justify-center rounded-xl'>
@@ -346,12 +337,14 @@ const FormBuilder = ({ id, template_history_id }: Props) => {
             {/* CONTENEDOR RESPONSIVE */}
             <div className='flex flex-col md:flex-row gap-2 md:gap-4'>
               {/* ---------- SIDEBAR RESPONSIVE ---------- */}
-              <div className='w-full md:w-72 md:sticky md:top-0 md:h-fit md:max-h-[88vh] md:overflow-y-auto border md:border-0 rounded-xl p-2 md:p-0'>
-                <NavInputsCreator paletteItems={paletteItems} />
+              <div className='w-full md:w-72 md:min-w-[288px] md:sticky md:top-0  border md:border-0 rounded-xl p-2 md:p-0'>
+                <ScrollArea className='md:h-[90vh] md:overflow-y-auto'>
+                  <NavInputsCreator paletteItems={paletteItems} />
+                </ScrollArea>
               </div>
 
               {/* ---------- ÁREA DEL FORMULARIO ---------- */}
-              <div className='flex-1  md:px-0'>
+              <div className='flex-1 min-w-0 md:px-0'>
                 <div className='bg-white rounded-xl  md:p-6'>
                   <SortableContext items={sectionIds} strategy={verticalListSortingStrategy}>
                     <FormAreaDroppable isOver={isFormAreaOver} isEmpty={sections.length === 0}>
@@ -414,6 +407,14 @@ const FormBuilder = ({ id, template_history_id }: Props) => {
         onEditInput={handleEditInput}
         onDeleteSection={handleDeleteSection}
         onDeleteInput={handleDeleteQuestion}
+      />
+      <FormVersionConfirmationDialog
+        open={showConfirmDialog}
+        onOpenChange={setShowConfirmDialog}
+        onConfirm={handleConfirmAction}
+        title='¿Crear nueva versión del formulario?'
+        description='Como este formulario ya tiene respuestas registradas, se creará una nueva versión con los cambios. Las respuestas anteriores no serán modificadas.'
+        isLoading={isLoadingSection || isLoadingInput}
       />
     </>
   )

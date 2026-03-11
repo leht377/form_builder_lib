@@ -44,3 +44,8 @@ export interface ResponseError {
   message: string
   errors: Record<string, any>
 }
+
+export interface DuplicateFormPayload {
+  id: string
+  has_answers: boolean
+}

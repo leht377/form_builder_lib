@@ -4,8 +4,8 @@ import DraggableSectionCreator from './drag-components/draggable-section-creator
 
 const NavInputsCreator = ({ paletteItems }: { paletteItems: FormItem[] }) => {
   return (
-    <div className='space-y-2 top-0'>
-      <div className='bg-white rounded-2xl p-6 border border-gray-200 shadow-sm transition-all'>
+    <div className='h-fit'>
+      <div className='h-full bg-white rounded-2xl p-6 border border-gray-200 shadow-sm transition-all'>
         {/* Paleta de Inputs */}
         <section className='mb-6'>
           <h2 className='text-lg font-semibold text-gray-800 mb-2'>Paleta de Inputs</h2>

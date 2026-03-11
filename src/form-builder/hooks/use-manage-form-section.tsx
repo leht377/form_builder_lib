@@ -1,12 +1,15 @@
 import { toast } from '../../components/react-sonner'
 import useErrorHandler from '../../hooks/use-handle-error'
 import { queryClient } from '../../lib/react-query'
-import type { EditSectionForm, ReorderSectionRequest, Section } from '../types/form-builder.types'
+import type {
+  EditSectionForm,
+  ReorderSectionRequest,
+  Section
+} from '../types/form-builder.types'
 import useApiDeleteSection from './api/use-api-delete-section'
 import useCreateApiSection from './api/use-create-api-section'
 import useEditApiSection from './api/use-edit-api-section'
 import useReorderApiSection from './api/use-reorder-api-section'
-
 
 interface Props {
   formId: string
@@ -18,24 +21,8 @@ const useManageFormSections = ({ formId, hasAnswers }: Props) => {
   const { mutate: mutateReorderSection, isPending: isLoadingReorder } = useReorderApiSection()
   const { mutateAsync: mutateDeleteSection, isPending: isLoadingDelete } = useApiDeleteSection()
   const { mutateAsync: mutateEditSection, isPending: isLoadingEdit } = useEditApiSection()
+
   const { errorhandler } = useErrorHandler()
-
-
-  // const executeCreateSection = () => {
-  //   createNewTemplateVersion(
-  //     { has_answers: true, template_history_id: Number(template_history_id) || 0 },
-  //     {
-  //       onSuccess: () => {
-  //         toast.success('Se creó una nueva versión del formulario')
-  //         queryClient.invalidateQueries({ queryKey: ['show-template'] })
-  //         queryClient.invalidateQueries({ queryKey: ['list-templates'] })
-  //       },
-  //       onError(error) {
-  //         errorhandler(error)
-  //       }
-  //     }
-  //   )
-  // }
 
   const createSection = (onConfirm?: () => void) => {
     if (hasAnswers) {
@@ -76,7 +63,6 @@ const useManageFormSections = ({ formId, hasAnswers }: Props) => {
   const deleteSection = async (id: string) => {
     if (hasAnswers) {
       // Si hay respuestas, crear nueva versión
-  
     } else {
       // Si no hay respuestas, eliminar directamente
       await mutateDeleteSection(
@@ -100,7 +86,7 @@ const useManageFormSections = ({ formId, hasAnswers }: Props) => {
         description: section.description ?? '',
         formId: Number(formId),
         title: section.title,
-        sectionId:Number(section.id.split('-')[0]) ,
+        sectionId: Number(section.id.split('-')[0]),
         columns: section.columns
       },
       {
@@ -120,11 +106,7 @@ const useManageFormSections = ({ formId, hasAnswers }: Props) => {
     reorderSection,
     deleteSection,
     updateSection,
-    isLoadingSection:
-      isLoadingCreate ||
-      isLoadingReorder ||
-      isLoadingDelete ||
-      isLoadingEdit
+    isLoadingSection: isLoadingCreate || isLoadingReorder || isLoadingDelete || isLoadingEdit
   }
 }
 

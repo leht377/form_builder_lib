@@ -1,3 +1,4 @@
+import type { DuplicateFormPayload } from '@/types/response.types'
 import { API_URL } from '../../config/enviroments'
 import { httpRequest } from '../../lib/http-request'
 import type {
@@ -119,4 +120,11 @@ export const verifyFormHaveAnswersService = (id: string) =>
   httpRequest<FormAnswersVerification>({
     url: `${url}/forms/${id}/verifyAnswers`,
     method: 'get'
+  })
+
+export const duplicateFormService = (id: string, data: DuplicateFormPayload) =>
+  httpRequest<Form>({
+    url: `${url}/forms/${id}/duplicate`,
+    method: 'post',
+    data
   })
