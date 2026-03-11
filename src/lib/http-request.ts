@@ -1,7 +1,5 @@
 import { type AxiosRequestConfig, type AxiosResponse, type Method } from 'axios'
 import axiosInstance from './axios-instance'
-import { storage } from './storage'
-// import { ACCESS_TOKEN } from '../config/constants'
 import type { ResponseAPI } from '../types/response.types'
 
 const convertBooleanParamsToNumber = <T extends Record<string, unknown>>(

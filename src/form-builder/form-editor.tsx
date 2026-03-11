@@ -347,7 +347,7 @@ const FormEditor = ({ id, onCreateNewVersion }: Props) => {
               <div className='flex-1 min-w-0 md:px-0'>
                 <div className='bg-white rounded-xl  md:p-6'>
                   <SortableContext items={sectionIds} strategy={verticalListSortingStrategy}>
-                    <FormAreaDroppable isOver={isFormAreaOver} isEmpty={sections.length === 0}>
+                    <FormAreaDroppable isOver={isFormAreaOver} isEmpty={sections.length === 0 ? true : false}>
                       {sections.length === 0 ? (
                         <div
                           className={`border-2 border-dashed rounded-lg p-8 md:p-12 text-center transition-colors ${

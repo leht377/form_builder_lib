@@ -21,7 +21,6 @@ function App() {
   }
   return (
     <>
-      <pre>{JSON.stringify(currentFormId, null, 2)}</pre>
       <div className='min-h-screen w-full py-8 px-4 overflow-x-hidden'>
         <FormEditor id={currentFormId} onCreateNewVersion={handleCreateNewVersion} />
       </div>
