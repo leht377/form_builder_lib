@@ -77,7 +77,7 @@ export function OverlayContent({
     </div>
   )
 }
-const FormBuilder = ({ id, onCreateNewVersion }: Props) => {
+const FormEditor = ({ id, onCreateNewVersion }: Props) => {
   const { sections, isLoading: isLoadingForm } = useShowForm(id)
 
   const { data } = useApiVerifyFormHaveAnswers(id)
@@ -420,4 +420,4 @@ const FormBuilder = ({ id, onCreateNewVersion }: Props) => {
   )
 }
 
-export default FormBuilder
+export default FormEditor

@@ -28,6 +28,16 @@ export const renderValidationErrors = <T extends Record<string, unknown>>(
 }
 
 
+export function tryParseJSON(value: any) {
+  if (typeof value !== 'string') return value
+  try {
+    return JSON.parse(value)
+  } catch {
+    return value
+  }
+}
+
+
 export const mapFileToNormalizedFile = (file: File): NormalizedFile => {
   // const objectUrl = URL.createObjectURL(file)
   return {

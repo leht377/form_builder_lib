@@ -265,3 +265,10 @@ export interface UploadFile {
     url: 'string'
   }
 }
+
+export interface AnswersQuestion {
+  form_question_id: string
+  value: {
+    key: string
+  }
+}

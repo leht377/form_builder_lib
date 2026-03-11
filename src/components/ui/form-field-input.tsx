@@ -1,9 +1,15 @@
 import React from 'react'
-import { Controller, type Control, type ControllerRenderProps, type FieldPath, type FieldValues } from 'react-hook-form'
+import {
+  Controller,
+  type Control,
+  type ControllerRenderProps,
+  type FieldPath,
+  type FieldValues
+} from 'react-hook-form'
 import { Input } from './input'
 import { Textarea } from './textarea'
 import { Switch } from './switch'
-import { Field, FieldDescription, FieldLabel } from './field'
+import { Field, FieldDescription, FieldError, FieldLabel } from './field'
 import { Checkbox } from './checkbox'
 import { FileInput } from './file-input'
 import MultiSelect, { type MultiValue, type StylesConfig } from 'react-select'
@@ -128,6 +134,7 @@ interface Props<T extends FieldValues> {
   editorClassName?: string
   height?: number
   width?: number
+  valid?: boolean
 }
 
 type FormFieldInputRenderProps<T extends FieldValues> = {
@@ -151,6 +158,7 @@ type FormFieldInputRenderProps<T extends FieldValues> = {
   editorClassName?: string
   height?: number
   width?: number
+  invalid?: boolean
 }
 
 const FormFieldInputRender = <T extends FieldValues>({
@@ -170,7 +178,8 @@ const FormFieldInputRender = <T extends FieldValues>({
   isLoading,
   multiple,
   accept,
-  ref
+  ref,
+  invalid
 }: FormFieldInputRenderProps<T>) => {
   switch (type) {
     case 'text':
@@ -187,6 +196,7 @@ const FormFieldInputRender = <T extends FieldValues>({
           readOnly={readOnly}
           type={type}
           step={step}
+          data-invalid={invalid}
         />
       )
 
@@ -202,6 +212,7 @@ const FormFieldInputRender = <T extends FieldValues>({
           readOnly={readOnly}
           type={type}
           step={step}
+          data-invalid={invalid}
         />
       )
     case 'text-area':
@@ -212,6 +223,7 @@ const FormFieldInputRender = <T extends FieldValues>({
           disabled={disabled}
           readOnly={readOnly}
           className='min-h-[100px]'
+          data-invalid={invalid}
         />
       )
     case 'switch':
@@ -222,6 +234,7 @@ const FormFieldInputRender = <T extends FieldValues>({
             onCheckedChange={field.onChange}
             aria-readonly
             disabled={disabled || readOnly}
+            data-invalid={invalid}
           />
           <FieldLabel>
             {label}
@@ -236,6 +249,7 @@ const FormFieldInputRender = <T extends FieldValues>({
             checked={field.value}
             onCheckedChange={field.onChange}
             disabled={disabled || readOnly}
+            data-invalid={invalid}
           />
           <FieldLabel>
             {label}
@@ -284,6 +298,7 @@ const FormFieldInputRender = <T extends FieldValues>({
           disabled={disabled}
           maxFiles={5}
           accept={accept}
+          data-invalid={invalid}
         />
       )
 
@@ -321,38 +336,39 @@ const FormFieldInput = <T extends FieldValues>({
     <Controller
       control={control}
       name={name}
-      render={({ field }) => (
-        <Field className={className}>
+      render={({ field, fieldState }) => (
+        <Field className={className} data-invalid={fieldState.invalid}>
           {label && !['switch', 'checkbox'].includes(type) && (
             <FieldLabel>
               {label}
               {isRequired && <span className='text-destructive'> *</span>}
             </FieldLabel>
           )}
-            <FormFieldInputRender
-              ref={ref}
-              type={type}
-              placeholder={placeholder}
-              field={field}
-              label={label}
-              isRequired={isRequired}
-              disabled={disabled}
-              readOnly={readOnly}
-              isMultiSelect={isMultiSelect}
-              accept={accept}
-              multiple={multiple}
-              isLoading={isLoading}
-              isSelectClearable={isSelectClearable}
-              options={options}
-              max={max}
-              min={min}
-              step={step}
-              editorClassName={editorClassName}
-              height={height}
-              width={width}
-            />
+          <FormFieldInputRender
+            ref={ref}
+            type={type}
+            placeholder={placeholder}
+            field={field}
+            label={label}
+            isRequired={isRequired}
+            disabled={disabled}
+            readOnly={readOnly}
+            isMultiSelect={isMultiSelect}
+            accept={accept}
+            multiple={multiple}
+            isLoading={isLoading}
+            isSelectClearable={isSelectClearable}
+            options={options}
+            max={max}
+            min={min}
+            step={step}
+            editorClassName={editorClassName}
+            height={height}
+            invalid={fieldState.invalid}
+            width={width}
+          />
           {description && <FieldDescription>{description}</FieldDescription>}
-          {/* <FormMessage /> */} //TODO: agregar mensaje de error en caso de validación fallida
+          {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
         </Field>
       )}
     />
