@@ -18,49 +18,49 @@ import type {
   UploadFile
 } from '../types/form-builder.types'
 
-const url = API_URL('form', 'v1')
+const formApiUrl = () => API_URL('form', 'v1')
 
 export const createSectionService = (formId: string) =>
   httpRequest<Section>({
-    url: `${url}/forms/${formId}/sections`,
+    url: `${formApiUrl()}/forms/${formId}/sections`,
     method: 'post'
   })
 
 export const listQuestionTypesService = () =>
   httpRequest<FormQuestionType[]>({
-    url: `${url}/question-types`,
+    url: `${formApiUrl()}/question-types`,
     method: 'get'
   })
 
 export const addQuestionToFormService = (data: AddQuestiontoFormRequets) =>
   httpRequest({
-    url: `${url}/forms/${data.formId}/sections/${data.sectionId}/questions`,
+    url: `${formApiUrl()}/forms/${data.formId}/sections/${data.sectionId}/questions`,
     method: 'post',
     data
   })
 
 export const reorderQuestionService = (data: ReorderQuestionRequest) =>
   httpRequest<Section>({
-    url: `${url}/forms/${data.formId}/reorder-questions`,
+    url: `${formApiUrl()}/forms/${data.formId}/reorder-questions`,
     method: 'put',
     data
   })
 
 export const reorderSectionsService = (data: ReorderSectionRequest) =>
   httpRequest<Section>({
-    url: `${url}/forms/${data.formId}/reorder-sections`,
+    url: `${formApiUrl()}/forms/${data.formId}/reorder-sections`,
     method: 'put',
     data
   })
 export const deleteSectionsService = (data: DeleteSectionRequest) =>
   httpRequest<Section>({
-    url: `${url}/forms/${data.formId}/sections/${data.sectionId}`,
+    url: `${formApiUrl()}/forms/${data.formId}/sections/${data.sectionId}`,
     method: 'delete'
   })
 
 export const uploadFileService = (data: FormData) =>
   httpRequest<UploadFile[]>({
-    url: `${url}/uploads`,
+    url: `${formApiUrl()}/uploads`,
     headers: {
       'Content-Type': 'multipart/form-data'
     },
@@ -70,61 +70,61 @@ export const uploadFileService = (data: FormData) =>
 
 export const deleteFileService = (id: string) =>
   httpRequest<UploadFile[]>({
-    url: `${url}/uploads/${id}`,
+    url: `${formApiUrl()}/uploads/${id}`,
     method: 'delete'
   })
 
 export const deleteQuestionService = (data: DeleteQuestionRequest) =>
   httpRequest({
-    url: `${url}/forms/${data.formId}/sections/${data.sectionId}/questions/${data.questionId}`,
+    url: `${formApiUrl()}/forms/${data.formId}/sections/${data.sectionId}/questions/${data.questionId}`,
     method: 'delete'
   })
 export const updateSectionsService = (data: UpdateSectionRequets) =>
   httpRequest<Section>({
-    url: `${url}/forms/${data.formId}/sections/${data.sectionId}`,
+    url: `${formApiUrl()}/forms/${data.formId}/sections/${data.sectionId}`,
     method: 'put',
     data
   })
 
 export const updateQuestionService = (data: UpdateQuestionRequest) =>
   httpRequest({
-    url: `${url}/forms/${data.formId}/sections/${data.sectionId}/questions/${data.questionId}`,
+    url: `${formApiUrl()}/forms/${data.formId}/sections/${data.sectionId}/questions/${data.questionId}`,
     method: 'put',
     data
   })
 export const updateAnswerForEspecificFormResponse = (data: UpdateAnswerRequest) =>
   httpRequest({
-    url: `${url}/forms/${data.formId}/responses/${data.responseId}/answers`,
+    url: `${formApiUrl()}/forms/${data.formId}/responses/${data.responseId}/answers`,
     method: 'put',
     data
   })
 
 export const showFormService = (formId: string) =>
   httpRequest<Form>({
-    url: `${url}/forms/${formId}`,
+    url: `${formApiUrl()}/forms/${formId}`,
     method: 'get'
   })
 export const showFormResponseService = (formId: string, responseId: string) =>
   httpRequest<FormResponse>({
-    url: `${url}/forms/${formId}/responses/${responseId}`,
+    url: `${formApiUrl()}/forms/${formId}/responses/${responseId}`,
     method: 'get'
   })
 
 export const showQuestionTypeService = (id: string) =>
   httpRequest<FormQuestionType>({
-    url: `${url}/question-types/${id}`,
+    url: `${formApiUrl()}/question-types/${id}`,
     method: 'get'
   })
 
 export const verifyFormHaveAnswersService = (id: string) =>
   httpRequest<FormAnswersVerification>({
-    url: `${url}/forms/${id}/verifyAnswers`,
+    url: `${formApiUrl()}/forms/${id}/verifyAnswers`,
     method: 'get'
   })
 
 export const duplicateFormService = (id: string, data: DuplicateFormPayload) =>
   httpRequest<Form>({
-    url: `${url}/forms/${id}/duplicate`,
+    url: `${formApiUrl()}/forms/${id}/duplicate`,
     method: 'post',
     data
   })

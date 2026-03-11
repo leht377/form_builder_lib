@@ -2,13 +2,17 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App'
-import { QueryClientProvider } from '@tanstack/react-query'
-import { queryClient } from './lib/react-query'
+import { FormBuilderProvider } from './form-builder/providers'
+
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <QueryClientProvider client={queryClient}>
+    <FormBuilderProvider
+      config={{
+        apiBaseUrl: import.meta.env.VITE_API_URL || ''
+      }}
+    >
       <App />
-    </QueryClientProvider>
+    </FormBuilderProvider>
   </StrictMode>
 )
