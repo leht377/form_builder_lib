@@ -1,4 +1,4 @@
-import { FieldValues, UseFormSetError } from 'react-hook-form'
+import { type FieldValues, type UseFormSetError } from 'react-hook-form'
 import { toast } from '../components/react-sonner'
 import { renderValidationErrors } from '../lib/utils'
 import { AxiosError } from 'axios'

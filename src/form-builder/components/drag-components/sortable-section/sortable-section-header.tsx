@@ -1,6 +1,7 @@
-import { Button } from '@/src/components/ui/button'
-import BaseIcon from '@/src/components/ui/base-icon'
-import { Section } from '../../../types/template-builder-types'
+import BaseIcon from "@/components/base-icon"
+import { Button } from "@/components/ui/button"
+import type { Section } from "@/form-builder/types/form-builder.types"
+
 
 interface Props {
   section: Section

@@ -253,3 +253,15 @@ export const CreateTemplateFormSchema = z.object({
 
 export type EditInputForm = z.infer<typeof EditInputFormSchema>
 export type CreateTemplateForm = z.infer<typeof CreateTemplateFormSchema>
+
+
+export interface UploadFile {
+  id: 'string'
+  type: 'file'
+  attributes: {
+    name: 'string'
+    size: 'string'
+    type: 'string'
+    url: 'string'
+  }
+}

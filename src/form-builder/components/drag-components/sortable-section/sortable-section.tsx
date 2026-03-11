@@ -7,13 +7,12 @@ import {
 import { CSS } from '@dnd-kit/utilities'
 import SortableSectionHeader from './sortable-section-header'
 import SortableSectionContainer from './sortable-section-container'
-import { useModalActionStore } from '@/src/hooks/use-modal-action-store'
-import { EditInputForm, Section } from '../../../types/template-builder-types'
 import { ModalsNameTemplateBuilder } from '../../../constants/dialog-contants'
 import SortableItem from '../sortable-item'
 import SortableItemCard from './sortable-Item-card'
-import BaseIcon from '@/src/components/ui/base-icon'
-import { EditSectionForm } from '../../../../../types/form-builder-types'
+import type { EditInputForm, EditSectionForm, Section } from '@/form-builder/types/form-builder.types'
+import { useModalActionStore } from '@/hooks/use-modal-action-store'
+import BaseIcon from '@/components/base-icon'
 interface SortableSectionProps {
   section: Section
   onLockItem: (sectionId: string, itemId: string, lock: boolean) => void

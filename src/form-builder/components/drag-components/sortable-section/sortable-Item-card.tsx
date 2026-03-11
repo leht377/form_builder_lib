@@ -1,14 +1,10 @@
-import BaseIcon from '@/src/components/ui/base-icon'
-import { Button } from '@/src/components/ui/button'
-import RenderTemplateInput from '../../inputs/render-template-input'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger
-} from '@/src/components/ui/dropdown-menu'
-import { Label } from '@/src/components/ui/label'
-import { cn } from '@/src/lib/utils'
+import BaseIcon from "@/components/base-icon"
+import { Button } from "@/components/ui/button"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { Label } from "@/components/ui/label"
+import { cn } from "@/lib/utils"
+import RenderTemplateInput from "../../render-template-input"
+
 
 interface Props {
   item: any
