@@ -1,10 +1,10 @@
 import { useDroppable } from '@dnd-kit/core'
 import { type ReactNode } from 'react'
-import type { ZodBooleanDef } from 'zod/v3'
 
 interface FormAreaDroppableProps {
   children: ReactNode
-  isOver: ZodBooleanDef
+  isOver: boolean
+  isEmpty?: boolean
 }
 
 export default function FormAreaDroppable({ children, isOver }: FormAreaDroppableProps) {
