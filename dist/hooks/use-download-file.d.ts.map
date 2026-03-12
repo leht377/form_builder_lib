@@ -1,0 +1,1 @@
+{"version":3,"file":"use-download-file.d.ts","sourceRoot":"","sources":["../../src/hooks/use-download-file.tsx"],"names":[],"mappings":"AAGA,UAAU,sBAAsB;IAC5B,QAAQ,CAAC,EAAE,MAAM,CAAC;IAClB,SAAS,CAAC,EAAE,MAAM,IAAI,CAAC;IACvB,OAAO,CAAC,EAAE,CAAC,KAAK,EAAE,KAAK,KAAK,IAAI,CAAC;CACpC;AAED,eAAO,MAAM,eAAe,GAAI,UAAS,sBAA2B;;aAQnD,MAAM;yBACM,MAAM;;;CAwClC,CAAC"}
