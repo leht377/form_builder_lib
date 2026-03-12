@@ -20,8 +20,6 @@ import {
   verticalListSortingStrategy
 } from '@dnd-kit/sortable'
 import { useState } from 'react'
-import type { IconName } from '../components/base-icon'
-import BaseIcon from '../components/base-icon'
 import type { EditInputForm, EditSectionForm, Form, Section } from './types/form-builder.types'
 import NavInputsCreator from './components/nav-inputs-creator'
 import FormAreaDroppable from './components/drag-components/form-area-droppable'
@@ -37,46 +35,14 @@ import RenderDialog from './components/(dialogs)/render-dialog'
 import FormVersionConfirmationDialog from './components/(dialogs)/form-version-confirmation-dialog'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import useCreateNewVersion from './hooks/use-create-new-version'
+import OverlayContent from './components/overlay-content'
 
 interface Props {
   id: string
   onCreateNewVersion?: (form: Form) => void
 }
 
-export function OverlayContent({
-  type,
-  label,
-  icon
-}: {
-  type: string
-  label: string
-  icon?: IconName
-}) {
-  const iconName = icon ? icon : null
-  const isSectionDrag = type === 'section'
-  const isSectionCreator = type === 'section-creator'
 
-  return (
-    <div
-      className={`flex items-center gap-2 px-4 py-2 rounded-xl border shadow-lg scale-105 ${
-        isSectionDrag ? 'bg-orange-100 border-orange-400' : 'bg-white'
-      }`}
-    >
-      {/* Icono */}
-      {iconName && (
-        <BaseIcon
-          name={iconName}
-          className={`size-4 ${isSectionDrag ? 'text-orange-600' : 'text-blue-500'}`}
-        />
-      )}
-
-      {/* Label */}
-      <span className={`font-medium ${isSectionDrag ? 'text-orange-700' : 'text-gray-700'}`}>
-        {isSectionCreator ? 'Nueva sección' : label}
-      </span>
-    </div>
-  )
-}
 const FormEditor = ({ id, onCreateNewVersion }: Props) => {
   const { sections, isLoading: isLoadingForm } = useShowForm(id)
 

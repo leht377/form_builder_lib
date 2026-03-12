@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider, type QueryClientConfig } from '@tanstack/react-query'
 import { type PropsWithChildren, useState } from 'react'
 import { FormBuilderConfigProvider, type FormBuilderConfig } from '../config/form-builder-config'
+import { Toaster } from 'sonner'
 
 interface FormBuilderProviderProps extends PropsWithChildren {
   config: Partial<FormBuilderConfig>
@@ -20,6 +21,7 @@ export const FormBuilderProvider = ({
   return (
     <FormBuilderConfigProvider config={config}>
       <QueryClientProvider client={resolvedQueryClient}>{children}</QueryClientProvider>
+      <Toaster />
     </FormBuilderConfigProvider>
   )
 }

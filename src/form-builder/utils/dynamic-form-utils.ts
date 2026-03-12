@@ -1,4 +1,4 @@
-import { ZodString, type ZodTypeAny, z, ZodType, ZodNumber } from 'zod/v3'
+import { ZodString, type ZodTypeAny, z, ZodNumber } from 'zod/v3'
 
 import type { FieldError, FieldErrorsImpl, Merge } from 'react-hook-form'
 import type {
@@ -13,8 +13,7 @@ import type {
   FormQuestion,
   FormQuestionTypeInput,
   FormResponse,
-  FormSection,
-  NormalizedFile
+  FormSection
 } from '../types/form-builder.types'
 import { tryParseJSON } from '@/lib/utils'
 
@@ -112,7 +111,7 @@ export const buildZodSchema = (
               })
               .optional()
           })
-        ) satisfies ZodType<NormalizedFile[]>
+        )
 
         if (field.required) {
           zodField = (zodField as z.ZodArray<any>).min(1, {

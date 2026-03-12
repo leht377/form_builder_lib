@@ -1,73 +1,73 @@
-# React + TypeScript + Vite
+# sdi-form-builder
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Libreria React para crear y renderizar formularios dinamicos.
 
-Currently, two official plugins are available:
+## Requisitos
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- React 18 o 19
+- React DOM 18 o 19
+- @tanstack/react-query v5
 
-## React Compiler
+## Instalacion
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install sdi-form-builder @tanstack/react-query react react-dom
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Uso rapido
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```tsx
+import { QueryClient } from '@tanstack/react-query'
+import {
+  FormBuilderProvider,
+  FormEditor,
+  RenderForm,
+  formBuilderSchema,
+  type Form
+} from 'sdi-form-builder'
+import 'sdi-form-builder/styles.css'
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+const queryClient = new QueryClient()
+
+function App() {
+  const form = {} as Form
+
+  return (
+    <FormBuilderProvider
+      config={{ apiBaseUrl: 'https://api.example.com' }}
+      queryClient={queryClient}
+    >
+      <FormEditor id={form.id.toString()} onCreateNewVersion={() => {}} />
+      <RenderForm
+        formSchema={formBuilderSchema(form, 'strict')}
+        onSubmit={(values) => console.log(values)}
+        buttonText='Enviar'
+      />
+    </FormBuilderProvider>
+  )
+}
 ```
+
+## API publica
+
+- `FormBuilderProvider`
+- `FormEditor`
+- `RenderForm`
+- `formBuilderSchema`
+- `mapDynamicFormAnswerToFormAnswer`
+- tipo `Form`
+
+## Scripts
+
+- `pnpm dev`: entorno de desarrollo con Vite
+- `pnpm build`: genera bundles ESM/CJS y tipos en `dist/`
+- `pnpm lint`: ejecuta ESLint
+
+## Publicacion
+
+Antes de publicar:
+
+1. Actualiza `version` en `package.json`.
+2. Ejecuta `pnpm build`.
+3. Verifica contenido del paquete con `npm pack --dry-run`.
+4. Publica con `npm publish`.
