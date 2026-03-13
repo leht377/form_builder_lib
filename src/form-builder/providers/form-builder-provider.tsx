@@ -1,6 +1,7 @@
 import { type PropsWithChildren } from 'react'
 import { FormBuilderConfigProvider, type FormBuilderConfig } from '../config/form-builder-config'
 import { Toaster } from 'sonner'
+import '../../index.css'
 
 interface FormBuilderProviderProps extends PropsWithChildren {
   config: Partial<FormBuilderConfig>
@@ -10,8 +11,6 @@ interface FormBuilderProviderProps extends PropsWithChildren {
 
 export const FormBuilderProvider = ({
   config,
-  queryClient: _queryClient,
-  queryClientConfig: _queryClientConfig,
   children
 }: FormBuilderProviderProps) => {
   return (
