@@ -1,6 +1,11 @@
 import { AxiosError } from 'axios';
 import type { UpdateSectionRequets } from '../../types/form-builder.types';
 import type { ResponseError } from '../../../types/response.types';
-declare const useEditApiSection: () => import("@tanstack/react-query").UseMutationResult<void, AxiosError<ResponseError, any>, UpdateSectionRequets, unknown>;
+declare const useEditApiSection: () => {
+    mutate: (variables: UpdateSectionRequets, callbacks?: import("../../../lib/async-hooks").MutationCallbacks<void, AxiosError<ResponseError, any>>) => void;
+    mutateAsync: (variables: UpdateSectionRequets, callbacks?: import("../../../lib/async-hooks").MutationCallbacks<void, AxiosError<ResponseError, any>>) => Promise<void>;
+    isPending: boolean;
+    error: AxiosError<ResponseError, any>;
+};
 export default useEditApiSection;
 //# sourceMappingURL=use-edit-api-section.d.ts.map

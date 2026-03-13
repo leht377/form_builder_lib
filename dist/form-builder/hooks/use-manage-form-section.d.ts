@@ -2,8 +2,9 @@ import type { EditSectionForm, Section } from '../types/form-builder.types';
 interface Props {
     formId: string;
     hasAnswers: boolean;
+    onRefetch?: () => void | Promise<unknown>;
 }
-declare const useManageFormSections: ({ formId, hasAnswers }: Props) => {
+declare const useManageFormSections: ({ formId, hasAnswers, onRefetch }: Props) => {
     createSection: (onConfirm?: () => void) => void;
     reorderSection: (sections: Section[]) => void;
     deleteSection: (id: string) => Promise<void>;

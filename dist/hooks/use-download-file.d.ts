@@ -4,10 +4,10 @@ interface UseDownloadFileOptions {
     onError?: (error: Error) => void;
 }
 export declare const useDownloadFile: (options?: UseDownloadFileOptions) => {
-    downloadFile: import("@tanstack/react-query").UseMutateFunction<void, Error, {
+    downloadFile: (payload: {
         url: string;
         customFilename?: string;
-    }, unknown>;
+    }) => void;
     isLoading: boolean;
 };
 export {};
