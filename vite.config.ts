@@ -14,12 +14,11 @@ export default defineConfig({
     },
     copyPublicDir: false,
     rollupOptions: {
-      external: ['react', 'react-dom', '@tanstack/react-query'],
+      external: ['react', 'react-dom'],
       output: {
         globals: {
           react: 'React',
-          'react-dom': 'ReactDOM',
-          '@tanstack/react-query': 'ReactQuery'
+          'react-dom': 'ReactDOM'
         }
       }
     }
