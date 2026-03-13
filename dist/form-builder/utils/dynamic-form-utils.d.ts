@@ -1,7 +1,8 @@
 import { type ZodTypeAny, z } from 'zod/v3';
 import type { FieldError, FieldErrorsImpl, Merge } from 'react-hook-form';
 import type { FormDynamicSchema, InputFieldDefinition, SpecialFormConfig } from '../types/dynamic-form.types';
-import type { AnswersQuestion, Form, FormResponse } from '../types/form-builder.types';
+import type { Answers, AnswersQuestion, Form, FormResponse } from '../types/form-builder.types';
+export declare const mapResponseToAnswers: (response: Record<string, any>, getId: (key: number) => number | null) => Answers[];
 export declare function getFieldError(error: FieldError | Merge<FieldError, FieldErrorsImpl<any>> | undefined): FieldError | undefined;
 export declare const buildInitialValues: (inputDefinitions: InputFieldDefinition[], initialVal?: Record<string, any>) => Record<string, any>;
 export declare const buildZodSchema: (inputDefinitions: InputFieldDefinition[], SpecialFormConfig?: SpecialFormConfig) => z.ZodEffects<z.ZodObject<Record<string, ZodTypeAny>, "strip", ZodTypeAny, {

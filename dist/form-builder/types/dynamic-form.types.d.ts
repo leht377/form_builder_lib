@@ -4,6 +4,7 @@ export interface InputFieldDefinitionConfig {
     accept?: string;
     size?: null | number;
     multiple?: boolean;
+    formatThousands?: boolean;
 }
 export interface SpecialFormConfig {
     equalFields: {
