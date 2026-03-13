@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App'
 import { FormBuilderProvider } from './form-builder/providers'
-import { queryClient } from './lib/react-query'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -12,7 +11,6 @@ createRoot(document.getElementById('root')!).render(
         apiBaseUrl: import.meta.env.VITE_API_URL || '',
         userId: '2'
       }}
-      queryClient={queryClient}
     >
       <App />
     </FormBuilderProvider>

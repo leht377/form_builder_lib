@@ -1,11 +1,11 @@
 import { AxiosError } from 'axios'
 import { updateQuestionService } from '../../services/form-builder.services'
-import { useMutation } from '@tanstack/react-query'
 import type { ResponseError } from '../../../types/response.types'
 import type { UpdateQuestionRequest } from '../../types/form-builder.types'
+import { useSimpleMutation } from '@/lib/async-hooks'
 
 const useUpdateApiQuestion = () => {
-  return useMutation<void, AxiosError<ResponseError>, UpdateQuestionRequest>({
+  return useSimpleMutation<void, UpdateQuestionRequest, AxiosError<ResponseError>>({
     mutationFn: async (data: UpdateQuestionRequest) => {
       await updateQuestionService(data)
     }

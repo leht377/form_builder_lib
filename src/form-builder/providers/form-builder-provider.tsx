@@ -1,26 +1,22 @@
-import { QueryClient, QueryClientProvider, type QueryClientConfig } from '@tanstack/react-query'
-import { type PropsWithChildren, useState } from 'react'
+import { type PropsWithChildren } from 'react'
 import { FormBuilderConfigProvider, type FormBuilderConfig } from '../config/form-builder-config'
 import { Toaster } from 'sonner'
 
 interface FormBuilderProviderProps extends PropsWithChildren {
   config: Partial<FormBuilderConfig>
-  queryClient?: QueryClient
-  queryClientConfig?: QueryClientConfig
+  queryClient?: unknown
+  queryClientConfig?: unknown
 }
 
 export const FormBuilderProvider = ({
   config,
-  queryClient,
-  queryClientConfig,
+  queryClient: _queryClient,
+  queryClientConfig: _queryClientConfig,
   children
 }: FormBuilderProviderProps) => {
-  const [internalQueryClient] = useState(() => new QueryClient(queryClientConfig))
-  const resolvedQueryClient = queryClient || internalQueryClient
-
   return (
     <FormBuilderConfigProvider config={config}>
-      <QueryClientProvider client={resolvedQueryClient}>{children}</QueryClientProvider>
+      {children}
       <Toaster />
     </FormBuilderConfigProvider>
   )

@@ -3,10 +3,10 @@ import { AxiosError } from 'axios'
 import { uploadFileService } from '../../services/form-builder.services'
 import type { NormalizedFile, UploadFile } from '../../types/form-builder.types'
 import type { ResponseError } from '../../../types/response.types'
-import { useMutation } from '@tanstack/react-query'
+import { useSimpleMutation } from '@/lib/async-hooks'
 
 const useApiUploadFile = () => {
-  return useMutation<UploadFile[], AxiosError<ResponseError>, NormalizedFile[]>({
+  return useSimpleMutation<UploadFile[], NormalizedFile[], AxiosError<ResponseError>>({
     mutationFn: async (data: NormalizedFile[]) => {
       const formData = new FormData()
 

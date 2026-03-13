@@ -1,10 +1,10 @@
-import { useMutation } from '@tanstack/react-query'
 import type { ResponseError } from '../../../types/response.types'
 import { createSectionService } from '../../services/form-builder.services'
 import { AxiosError } from 'axios'
+import { useSimpleMutation } from '@/lib/async-hooks'
 
 const useCreateApiSection = () => {
-  return useMutation<void, AxiosError<ResponseError>, string>({
+  return useSimpleMutation<void, string, AxiosError<ResponseError>>({
     mutationFn: async (formId: string) => {
       await createSectionService(formId)
     }
