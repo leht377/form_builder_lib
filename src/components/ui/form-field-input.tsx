@@ -135,6 +135,7 @@ interface Props<T extends FieldValues> {
   height?: number
   width?: number
   valid?: boolean
+  formatThousands?: boolean
 }
 
 type FormFieldInputRenderProps<T extends FieldValues> = {
@@ -159,6 +160,7 @@ type FormFieldInputRenderProps<T extends FieldValues> = {
   height?: number
   width?: number
   invalid?: boolean
+  formatThousands?: boolean
 }
 
 const FormFieldInputRender = <T extends FieldValues>({
@@ -179,7 +181,8 @@ const FormFieldInputRender = <T extends FieldValues>({
   multiple,
   accept,
   ref,
-  invalid
+  invalid,
+  formatThousands = false
 }: FormFieldInputRenderProps<T>) => {
   switch (type) {
     case 'text':
@@ -200,21 +203,34 @@ const FormFieldInputRender = <T extends FieldValues>({
         />
       )
 
-    case 'number':
+    case 'number': {
+      const rawNumberValue =
+        field.value === undefined || field.value === null ? '' : String(field.value)
+      const numericOnlyValue = rawNumberValue.replace(/\D/g, '')
+      const displayValue =
+        formatThousands && numericOnlyValue
+          ? Number(numericOnlyValue).toLocaleString('en-US')
+          : numericOnlyValue
+
       return (
         <Input
           placeholder={placeholder}
           {...field}
-          min={min}
-          max={max}
-          onChange={(e) => field.onChange(Number(e.target.value))}
+          value={displayValue}
+          onChange={(e) => {
+            const nextNumericValue = e.target.value.replace(/\D/g, '')
+            field.onChange(nextNumericValue)
+          }}
           disabled={disabled}
           readOnly={readOnly}
-          type={type}
+          type='text'
+          inputMode='numeric'
+          pattern={formatThousands ? '[0-9,]*' : '[0-9]*'}
           step={step}
           data-invalid={invalid}
         />
       )
+    }
     case 'text-area':
       return (
         <Textarea
@@ -330,7 +346,8 @@ const FormFieldInput = <T extends FieldValues>({
   ref,
   editorClassName,
   height,
-  width
+  width,
+  formatThousands = false
 }: Props<T>) => {
   return (
     <Controller
@@ -366,6 +383,7 @@ const FormFieldInput = <T extends FieldValues>({
             height={height}
             invalid={fieldState.invalid}
             width={width}
+            formatThousands={formatThousands}
           />
           {description && <FieldDescription>{description}</FieldDescription>}
           {fieldState.invalid && <FieldError errors={[fieldState.error]} />}

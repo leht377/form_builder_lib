@@ -112,6 +112,7 @@ const RenderForm = ({
                     isMultiSelect={field.config?.multiple}
                     multiple={field.config?.multiple}
                     accept={field.config?.accept}
+                    formatThousands={field.config?.formatThousands}
                     readOnly={isReadonly}
                   
                   />

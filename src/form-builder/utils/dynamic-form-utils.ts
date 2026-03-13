@@ -1,4 +1,4 @@
-import { ZodString, type ZodTypeAny, z, ZodNumber } from 'zod/v3'
+import { ZodString, type ZodTypeAny, z } from 'zod/v3'
 
 import type { FieldError, FieldErrorsImpl, Merge } from 'react-hook-form'
 import type {
@@ -8,6 +8,7 @@ import type {
   SpecialFormConfig
 } from '../types/dynamic-form.types'
 import type {
+  Answers,
   AnswersQuestion,
   Form,
   FormQuestion,
@@ -23,6 +24,21 @@ const normalizeDate = (date: string) => {
   const [d, m, y] = date.split('/')
   return `${y}-${m}-${d}`
 }
+
+
+export const mapResponseToAnswers = (
+  response: Record<string, any>,
+  getId: (key: number) => number | null
+): Answers[] =>
+  Object.entries(response).map(([key, value]) => ({
+    id: getId(Number(key)),
+    form_question_id: Number(key),
+    value: {
+      key: mapperAnwserValueSaveProgress(value)
+    }
+  }))
+
+
 export function getFieldError(
   error: FieldError | Merge<FieldError, FieldErrorsImpl<any>> | undefined
 ): FieldError | undefined {
@@ -150,22 +166,40 @@ export const buildZodSchema = (
 
         break
       case 'number':
-        zodField = z.coerce.number({
+        let numberSchema: ZodTypeAny = z.number({
           required_error: `${field.label} es obligatorio`,
           invalid_type_error: `${field.label} debe ser un numero valido`
         })
 
         if (field.min !== undefined)
-          zodField = (zodField as ZodNumber).min(Number(field.min), {
+          numberSchema = (numberSchema as z.ZodNumber).min(Number(field.min), {
             message: `${field.label} debe ser como minimo ${field.min}`
           })
 
         if (field.max !== undefined)
-          zodField = (zodField as ZodNumber).max(Number(field.max), {
+          numberSchema = (numberSchema as z.ZodNumber).max(Number(field.max), {
             message: `${field.label} debe ser como máximo ${field.max}`
           })
 
-        if (!field.required) zodField = zodField.optional()
+        if (!field.required) numberSchema = numberSchema.optional()
+
+        zodField = z.preprocess((value) => {
+          if (value === '' || value === null || value === undefined) return undefined
+
+          if (typeof value === 'number') {
+            return Number.isFinite(value) ? value : Number.NaN
+          }
+
+          if (typeof value === 'string') {
+            const normalized = value.replace(/,/g, '').trim()
+            if (!normalized) return undefined
+            const isValidNumeric = /^\d+(\.\d+)?$/.test(normalized)
+            if (!isValidNumeric) return Number.NaN
+            return Number(normalized)
+          }
+
+          return Number.NaN
+        }, numberSchema)
 
         break
       case 'text':
@@ -317,7 +351,10 @@ export const formBuilderSchema = (
         multiple: q.attributes.config?.multiple
           ? toBoolean(q.attributes.config?.multiple)
           : undefined,
-        size: q.attributes.config?.size ? Number(q.attributes.config?.size) : undefined
+        size: q.attributes.config?.size ? Number(q.attributes.config?.size) : undefined,
+        formatThousands: q.attributes.config?.formatThousands
+          ? toBoolean(q.attributes.config?.formatThousands)
+          : undefined
       }
     }
   }

@@ -6,12 +6,22 @@ import { toast } from '@/components/react-sonner'
 import { queryClient } from '@/lib/react-query'
 import useErrorHandler from '@/hooks/use-handle-error'
 import type { AxiosError } from 'axios'
+import type { ComponentProps } from 'react'
 import useShowApiFormResponse from './hooks/api/use-show-api-form-response'
-interface Props {
+import FormLoading from './components/form-loading'
+import FormNotFound from './components/form-not-found'
+
+type DynamicFormRenderProps = Omit<
+  ComponentProps<typeof RenderForm>,
+  'formSchema' | 'onSubmit' | 'isSending' | 'initialValues'
+>
+
+interface Props extends DynamicFormRenderProps {
   formId: string
   formResponseId: string
 }
-const DynamicForm = ({ formId, formResponseId }: Props) => {
+
+const DynamicForm = ({ formId, formResponseId, ...renderFormProps }: Props) => {
   const { data: form, isLoading: isLoadignForm } = useShowApiForm(formId)
   const { data: formResponse, isLoading: isLoadingResponse } = useShowApiFormResponse({
     formId: formId?.toString(),
@@ -50,13 +60,14 @@ const DynamicForm = ({ formId, formResponseId }: Props) => {
     })
   }
 
-  if (isLoadignForm || isLoadingResponse) return <div>Loading...</div>
-  if (!form) return <div>Form not found</div>
+  if (isLoadignForm || isLoadingResponse) return <FormLoading />
+  if (!form) return <FormNotFound />
 
   const formSchema = formBuilderSchema(form, 'strict')
 
   return (
     <RenderForm
+      {...renderFormProps}
       formSchema={formSchema}
       onSubmit={handleSubmit}
       isSending={isSubmitingForm}
