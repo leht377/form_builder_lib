@@ -10,6 +10,7 @@ import type { ComponentProps } from 'react'
 import useShowApiFormResponse from './hooks/api/use-show-api-form-response'
 import FormLoading from './components/form-loading'
 import FormNotFound from './components/form-not-found'
+import { useFormBuilderConfig } from './config'
 
 type DynamicFormRenderProps = Omit<
   ComponentProps<typeof RenderForm>,
@@ -22,6 +23,7 @@ interface Props extends DynamicFormRenderProps {
 }
 
 const DynamicForm = ({ formId, formResponseId, ...renderFormProps }: Props) => {
+  const { userId } = useFormBuilderConfig()
   const { data: form, isLoading: isLoadignForm } = useShowApiForm(formId)
   const { data: formResponse, isLoading: isLoadingResponse } = useShowApiFormResponse({
     formId: formId?.toString(),
@@ -38,7 +40,7 @@ const DynamicForm = ({ formId, formResponseId, ...renderFormProps }: Props) => {
   const { handleSubmit: handleSubmitDynamicForm, isLoading: isSubmitingForm } =
     useDynamicFormSubmit({
       formId: formId?.toString(),
-      userId: '1',
+      userId: userId?.toString() || '1',
       formResponse: formResponse,
       answersAssociatedIds: aswersAssociatedIds
       // formResponse,
