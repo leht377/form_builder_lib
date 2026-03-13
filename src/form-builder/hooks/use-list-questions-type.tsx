@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { useSimpleQuery } from '@/lib/async-hooks'
 import { listQuestionTypesService } from '../services/form-builder.services'
 
 const useListQuestionType = () => {
@@ -13,8 +13,7 @@ const useListQuestionType = () => {
   //   fetchData(params)
   // }
 
-  return useQuery({
-    queryKey: ['list-question-type'],
+  return useSimpleQuery({
     queryFn: async () => {
       const response = await listQuestionTypesService()
       return response.data.data

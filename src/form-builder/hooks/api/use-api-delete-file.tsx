@@ -1,11 +1,11 @@
 import { AxiosError } from 'axios'
 
 import { deleteFileService } from '../../services/form-builder.services'
-import { useMutation } from '@tanstack/react-query'
 import type { ResponseError } from '../../../types/response.types'
+import { useSimpleMutation } from '@/lib/async-hooks'
 
 const useApiDeleteFile = () => {
-  return useMutation<void, AxiosError<ResponseError>, string>({
+  return useSimpleMutation<void, string, AxiosError<ResponseError>>({
     mutationFn: async (id: string) => {
       await deleteFileService(id)
     }

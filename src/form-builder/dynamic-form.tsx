@@ -3,7 +3,6 @@ import { useShowApiForm } from './hooks/api/use-show-api-form'
 import { extractInitialValues, formBuilderSchema } from './utils/dynamic-form-utils'
 import { useDynamicFormSubmit } from './hooks/use-dynamic-form-submit'
 import { toast } from '@/components/react-sonner'
-import { queryClient } from '@/lib/react-query'
 import useErrorHandler from '@/hooks/use-handle-error'
 import type { AxiosError } from 'axios'
 import type { ComponentProps } from 'react'
@@ -25,10 +24,11 @@ interface Props extends DynamicFormRenderProps {
 const DynamicForm = ({ formId, formResponseId, ...renderFormProps }: Props) => {
   const { userId } = useFormBuilderConfig()
   const { data: form, isLoading: isLoadignForm } = useShowApiForm(formId)
-  const { data: formResponse, isLoading: isLoadingResponse } = useShowApiFormResponse({
-    formId: formId?.toString(),
-    formResponseId: formResponseId?.toString()
-  })
+  const {
+    data: formResponse,
+    isLoading: isLoadingResponse,
+    refetch: refetchFormResponse
+  } = useShowApiFormResponse({ formId: formId?.toString(), formResponseId: formResponseId?.toString() })
 
   const aswersAssociatedIds = new Map(
     formResponse?.relationships.answers.map((a) => [
@@ -40,7 +40,7 @@ const DynamicForm = ({ formId, formResponseId, ...renderFormProps }: Props) => {
   const { handleSubmit: handleSubmitDynamicForm, isLoading: isSubmitingForm } =
     useDynamicFormSubmit({
       formId: formId?.toString(),
-      userId: userId?.toString() || '1',
+      userId: userId?.toString(),
       formResponse: formResponse,
       answersAssociatedIds: aswersAssociatedIds
       // formResponse,
@@ -52,9 +52,7 @@ const DynamicForm = ({ formId, formResponseId, ...renderFormProps }: Props) => {
     handleSubmitDynamicForm(response, formResponseId, {
       onSuccess() {
         toast.success('Información actualizada con éxito!')
-        queryClient.invalidateQueries({
-          queryKey: ['show-form-response']
-        })
+        void refetchFormResponse()
       },
       onError(error) {
         errorhandler(error as AxiosError)

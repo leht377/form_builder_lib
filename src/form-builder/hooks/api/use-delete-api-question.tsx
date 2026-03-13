@@ -1,11 +1,11 @@
 import { AxiosError } from 'axios'
 import { deleteQuestionService } from '../../services/form-builder.services'
-import { useMutation } from '@tanstack/react-query'
 import type { DeleteQuestionRequest } from '../../types/form-builder.types'
 import type { ResponseError } from '../../../types/response.types'
+import { useSimpleMutation } from '@/lib/async-hooks'
 
 const useDeleteApiQuestion = () => {
-  return useMutation<void, AxiosError<ResponseError>, DeleteQuestionRequest>({
+  return useSimpleMutation<void, DeleteQuestionRequest, AxiosError<ResponseError>>({
     mutationFn: async (data: DeleteQuestionRequest) => {
       await deleteQuestionService(data)
     }
