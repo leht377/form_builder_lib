@@ -2,10 +2,12 @@ import { createContext, useContext, useMemo, type PropsWithChildren } from 'reac
 
 export interface FormBuilderConfig {
   apiBaseUrl: string
+  userId: string
 }
 
 const DEFAULT_CONFIG: FormBuilderConfig = {
-  apiBaseUrl: ''
+  apiBaseUrl: '',
+  userId: ''
 }
 
 let runtimeConfig: FormBuilderConfig = DEFAULT_CONFIG
