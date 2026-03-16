@@ -1,6 +1,5 @@
 import { type PropsWithChildren } from 'react';
 import { type FormBuilderConfig } from '../config/form-builder-config';
-import '../../index.css';
 interface FormBuilderProviderProps extends PropsWithChildren {
     config: Partial<FormBuilderConfig>;
     queryClient?: unknown;
