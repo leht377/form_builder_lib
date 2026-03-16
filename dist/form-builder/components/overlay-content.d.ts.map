@@ -1,1 +1,0 @@
-{"version":3,"file":"overlay-content.d.ts","sourceRoot":"","sources":["../../../src/form-builder/components/overlay-content.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,QAAQ,EAAE,MAAM,wBAAwB,CAAA;AAGtD,MAAM,CAAC,OAAO,UAAU,cAAc,CAAC,EACrC,IAAI,EACJ,KAAK,EACL,IAAI,EACL,EAAE;IACD,IAAI,EAAE,MAAM,CAAA;IACZ,KAAK,EAAE,MAAM,CAAA;IACb,IAAI,CAAC,EAAE,QAAQ,CAAA;CAChB,2CAyBA"}
