@@ -1,12 +1,12 @@
 
 import { AxiosError } from 'axios'
-import { useMutation } from '@tanstack/react-query'
 import { updateAnswerForEspecificFormResponse } from '../services/form-builder.services'
 import type { UpdateAnswerRequest } from '../types/form-builder.types'
 import type { ResponseError } from '@/types/response.types'
+import { useSimpleMutation } from '@/lib/async-hooks'
 
 const useUpdateAnswers = () => {
-  return useMutation<any, AxiosError<ResponseError>, UpdateAnswerRequest>({
+  return useSimpleMutation<any, UpdateAnswerRequest, AxiosError<ResponseError>>({
     mutationFn: async (data: UpdateAnswerRequest) => {
       await updateAnswerForEspecificFormResponse(data)
     }

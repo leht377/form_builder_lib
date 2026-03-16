@@ -44,7 +44,7 @@ interface Props {
 
 
 const FormEditor = ({ id, onCreateNewVersion }: Props) => {
-  const { sections, isLoading: isLoadingForm } = useShowForm(id)
+  const { sections, isLoading: isLoadingForm, refetch } = useShowForm(id)
 
   const { data } = useApiVerifyFormHaveAnswers(id)
   const hasAnswers = Boolean(data?.attributes.has_answers)
@@ -52,13 +52,15 @@ const FormEditor = ({ id, onCreateNewVersion }: Props) => {
   const { createSection, reorderSection, deleteSection, updateSection, isLoadingSection } =
     useManageFormSections({
       formId: id,
-      hasAnswers
+      hasAnswers,
+      onRefetch: refetch
     })
 
   const { addQuestionToSection, reorderQuestion, deleteQuestion, updateQuestion, isLoadingInput } =
     useManageFormInput({
       formId: id,
-      hasAnswers
+      hasAnswers,
+      onRefetch: refetch
     })
 
   // Estado para el diálogo de confirmación

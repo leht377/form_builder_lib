@@ -1,17 +1,17 @@
-import { useQuery } from '@tanstack/react-query'
+import { useSimpleQuery } from '@/lib/async-hooks'
 import { showFormResponseService } from '../../services/form-builder.services'
 interface Params {
   formId: string
   formResponseId: string
 }
 const useShowApiFormResponse = (params: Params) => {
-  return useQuery({
-    queryKey: ['show-form-response', JSON.stringify(params)],
+  return useSimpleQuery({
     queryFn: async () => {
       const response = await showFormResponseService(params.formId, params.formResponseId)
       return response.data.data
     },
-    enabled: Boolean(params.formId && params.formResponseId)
+    enabled: Boolean(params.formId && params.formResponseId),
+    deps: [params.formId, params.formResponseId]
   })
 }
 

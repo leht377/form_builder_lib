@@ -1,6 +1,5 @@
 import { toast } from '../../components/react-sonner'
 import useErrorHandler from '../../hooks/use-handle-error'
-import { queryClient } from '../../lib/react-query'
 import type {
   EditSectionForm,
   ReorderSectionRequest,
@@ -14,9 +13,10 @@ import useReorderApiSection from './api/use-reorder-api-section'
 interface Props {
   formId: string
   hasAnswers: boolean
+  onRefetch?: () => void | Promise<unknown>
 }
 
-const useManageFormSections = ({ formId, hasAnswers }: Props) => {
+const useManageFormSections = ({ formId, hasAnswers, onRefetch }: Props) => {
   const { mutate, isPending: isLoadingCreate } = useCreateApiSection()
   const { mutate: mutateReorderSection, isPending: isLoadingReorder } = useReorderApiSection()
   const { mutateAsync: mutateDeleteSection, isPending: isLoadingDelete } = useApiDeleteSection()
@@ -33,7 +33,7 @@ const useManageFormSections = ({ formId, hasAnswers }: Props) => {
       mutate(formId, {
         onSuccess: () => {
           toast.success('La sección se creó correctamente.')
-          queryClient.invalidateQueries({ queryKey: ['show-api-form', formId] })
+          void onRefetch?.()
         },
         onError(error) {
           errorhandler(error)
@@ -52,7 +52,7 @@ const useManageFormSections = ({ formId, hasAnswers }: Props) => {
     mutateReorderSection(data, {
       onSuccess: () => {
         toast.success('El orden de las secciones se actualizó correctamente.')
-        queryClient.invalidateQueries({ queryKey: ['show-api-form', formId] })
+        void onRefetch?.()
       },
       onError(error) {
         errorhandler(error)
@@ -70,7 +70,7 @@ const useManageFormSections = ({ formId, hasAnswers }: Props) => {
         {
           onSuccess: () => {
             toast.success('La sección se eliminó correctamente.')
-            queryClient.invalidateQueries({ queryKey: ['show-api-form', formId] })
+            void onRefetch?.()
           },
           onError(error) {
             errorhandler(error)
@@ -92,7 +92,7 @@ const useManageFormSections = ({ formId, hasAnswers }: Props) => {
       {
         onSuccess: () => {
           toast.success('La sección se actualizó correctamente.')
-          queryClient.invalidateQueries({ queryKey: ['show-api-form', formId] })
+          void onRefetch?.()
         },
         onError(error) {
           errorhandler(error)

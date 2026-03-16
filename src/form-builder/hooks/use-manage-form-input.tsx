@@ -1,6 +1,5 @@
 import { toast } from '../../components/react-sonner'
 import useErrorHandler from '../../hooks/use-handle-error'
-import { queryClient } from '../../lib/react-query'
 import type {
   FormItem,
   ReorderQuestionRequest,
@@ -14,9 +13,10 @@ import useUpdateApiQuestion from './api/use-update-api-question'
 interface Props {
   formId: string
   hasAnswers: boolean
+  onRefetch?: () => void | Promise<unknown>
 }
 
-const useManageFormInput = ({ formId, hasAnswers }: Props) => {
+const useManageFormInput = ({ formId, hasAnswers, onRefetch }: Props) => {
   const { mutate: mutateAddQuestion, isPending: isLoadingAdd } = useAddApiQuestionToSection()
   const { mutate: mutateReorderQuestion, isPending: isLoadingReorder } = useReorderApiQuestion()
   const { mutateAsync: mutateDeleteQuestion, isPending: isLoadingDelete } = useDeleteApiQuestion()
@@ -44,7 +44,7 @@ const useManageFormInput = ({ formId, hasAnswers }: Props) => {
         {
           onSuccess: () => {
             toast.success('La pregunta se agregó correctamente a la sección.')
-            queryClient.invalidateQueries({ queryKey: ['show-api-form', formId] })
+            void onRefetch?.()
           },
           onError(error) {
             errorhandler(error)
@@ -67,7 +67,7 @@ const useManageFormInput = ({ formId, hasAnswers }: Props) => {
     mutateReorderQuestion(data, {
       onSuccess: () => {
         toast.success('El orden de las preguntas se actualizó correctamente.')
-        queryClient.invalidateQueries({ queryKey: ['show-api-form', formId] })
+        void onRefetch?.()
       },
       onError(error) {
         errorhandler(error)
@@ -93,7 +93,7 @@ const useManageFormInput = ({ formId, hasAnswers }: Props) => {
         {
           onSuccess: () => {
             toast.success('La pregunta fue eliminada correctamente.')
-            queryClient.invalidateQueries({ queryKey: ['show-api-form', formId] })
+            void onRefetch?.()
           },
           onError(error) {
             errorhandler(error)
@@ -116,7 +116,7 @@ const useManageFormInput = ({ formId, hasAnswers }: Props) => {
       {
         onSuccess: () => {
           toast.success('Configuración actualizada correctamente.')
-          queryClient.invalidateQueries({ queryKey: ['show-api-form', formId] })
+          void onRefetch?.()
         },
         onError(error) {
           errorhandler(error)

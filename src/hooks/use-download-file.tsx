@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useSimpleMutation } from '../lib/async-hooks'
 import { toast } from "../components/react-sonner";
 
 interface UseDownloadFileOptions {
@@ -10,7 +10,7 @@ interface UseDownloadFileOptions {
 export const useDownloadFile = (options: UseDownloadFileOptions = {}) => {
     const { filename = "download", onSuccess, onError } = options;
 
-    const mutation = useMutation({
+    const mutation = useSimpleMutation<void, { url: string; customFilename?: string }, Error>({
         mutationFn: async ({
             url,
             customFilename,
@@ -36,24 +36,25 @@ export const useDownloadFile = (options: UseDownloadFileOptions = {}) => {
             link.remove();
 
             globalThis.URL.revokeObjectURL(objectUrl);
-        },
-
-        onSuccess: () => {
-            toast.success("Archivo descargado exitosamente");
-            onSuccess?.();
-        },
-
-        onError: (error) => {
-            const message =
-                error instanceof Error ? error.message : "Error desconocido";
-            console.error("Error descargando archivo:", message);
-            toast.error(`Error al descargar: ${message}`);
-            onError?.(error instanceof Error ? error : new Error(message));
-        },
+            }
     });
 
     return {
-        downloadFile: mutation.mutate,
+        downloadFile: (payload: { url: string; customFilename?: string }) => {
+            mutation.mutate(payload, {
+                onSuccess: () => {
+                    toast.success("Archivo descargado exitosamente");
+                    onSuccess?.();
+                },
+                onError: (error) => {
+                    const message =
+                        error instanceof Error ? error.message : "Error desconocido";
+                    console.error("Error descargando archivo:", message);
+                    toast.error(`Error al descargar: ${message}`);
+                    onError?.(error instanceof Error ? error : new Error(message));
+                }
+            });
+        },
         isLoading: mutation.isPending,
     };
 };

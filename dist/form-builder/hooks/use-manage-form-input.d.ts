@@ -2,8 +2,9 @@ import type { FormItem, UpdateQuestionRequest } from '../types/form-builder.type
 interface Props {
     formId: string;
     hasAnswers: boolean;
+    onRefetch?: () => void | Promise<unknown>;
 }
-declare const useManageFormInput: ({ formId, hasAnswers }: Props) => {
+declare const useManageFormInput: ({ formId, hasAnswers, onRefetch }: Props) => {
     addQuestionToSection: (sectionId: string, formQuestionTypeId: string, label: string, onConfirm?: () => void) => void;
     reorderQuestion: (inputs: FormItem[], moveToSectionId?: number) => void;
     deleteQuestion: (sectionId: string, questionId: string) => Promise<void>;
