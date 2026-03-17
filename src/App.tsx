@@ -1,7 +1,8 @@
 // import FormBuilder from "./form-builder/form-builder"
-
+import "./index.css"
 import { useState } from 'react'
 import FormEditor from './form-builder/form-editor'
+import DynamicForm from "./form-builder/dynamic-form"
 
 // import FormBuilder from "./form-builder/form-builder".
 
@@ -14,7 +15,7 @@ function App() {
         <FormEditor id={curr} onCreateNewVersion={(v) => setCurr(v.id.toString())} />
       </div>
       <div className='min-h-screen w-full py-8 px-4 overflow-x-hidden'>
-        {/* <DynamicForm formId={curr} formResponseId='1456' /> */}
+        <DynamicForm formId={"109"} formResponseId='1459' />
       </div>
     </>
   )
