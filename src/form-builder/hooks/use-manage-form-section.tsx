@@ -87,7 +87,7 @@ const useManageFormSections = ({ formId, hasAnswers, onRefetch }: Props) => {
         formId: Number(formId),
         title: section.title,
         sectionId: Number(section.id.split('-')[0]),
-        columns: section.columns
+        columns: Number(section.columns)
       },
       {
         onSuccess: () => {
