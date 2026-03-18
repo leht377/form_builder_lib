@@ -35727,7 +35727,7 @@ function bSe({ section: e, onLockItem: t, isOver: o }) {
               id: e.id,
               description: e.description,
               title: e.title,
-              columns: e.columns
+              columns: e.columns?.toString()
             })
           }
         ),
@@ -39957,7 +39957,7 @@ const gNe = (e) => {
           formId: Number(e),
           title: g.title,
           sectionId: Number(g.id.split("-")[0]),
-          columns: g.columns
+          columns: Number(g.columns)
         },
         {
           onSuccess: () => {
@@ -40260,7 +40260,7 @@ function PNe({ visible: e, close: t, data: o, deleteInput: r }) {
       /* @__PURE__ */ y.jsx(
         Uj,
         {
-          className: "bg-destructive text-destructive-foreground hover:bg-destructive/90 text-white",
+          className: "bg-red-400 text-destructive-foreground hover:bg-destructive/90 text-white",
           disabled: n,
           onClick: i,
           children: n ? /* @__PURE__ */ y.jsx(no, { className: "animate-spin" }) : "Eliminar"
@@ -40410,7 +40410,7 @@ function HNe({ visible: e, close: t, data: o, deleteSection: r }) {
       /* @__PURE__ */ y.jsx(
         Uj,
         {
-          className: "bg-destructive text-destructive-foreground hover:bg-destructive/90 text-white",
+          className: "bg-red-400 text-destructive-foreground  hover:bg-destructive/90 text-white",
           disabled: n,
           onClick: i,
           children: n ? /* @__PURE__ */ y.jsx(no, { className: "animate-spin" }) : "Eliminar"
@@ -50741,7 +50741,7 @@ const Ue = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
 }, Symbol.toStringTag, { value: "Module" })), gPe = Ue.object({
   id: Ue.string(),
   title: Ue.string(),
-  columns: Ue.number(),
+  columns: Ue.string(),
   description: Ue.string().optional()
 }), kPe = Ue.object({
   id: Ue.string(),
@@ -55367,7 +55367,7 @@ const xJ = {
 ), dTe = ({
   onsubmit: e,
   closeDialog: t,
-  values: o = { description: "", id: "", title: "", columns: 1 }
+  values: o = { description: "", id: "", title: "", columns: "1" }
 }) => {
   const [r, n] = Pe(!1), a = jj({
     resolver: UP(gPe),

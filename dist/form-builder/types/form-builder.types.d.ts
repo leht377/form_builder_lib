@@ -177,7 +177,7 @@ export interface AddQuestiontoFormRequets {
 export declare const EditSectionFormSchema: z.ZodObject<{
     id: z.ZodString;
     title: z.ZodString;
-    columns: z.ZodNumber;
+    columns: z.ZodString;
     description: z.ZodOptional<z.ZodString>;
 }, z.core.$strip>;
 export interface Answers {
