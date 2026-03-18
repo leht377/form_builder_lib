@@ -19,7 +19,7 @@ interface Props {
 const FormEditSection = ({
   onsubmit,
   closeDialog,
-  values = { description: '', id: '', title: '', columns: 1 }
+  values = { description: '', id: '', title: '', columns: "1" }
 }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
   const form = useForm<EditSectionForm>({
