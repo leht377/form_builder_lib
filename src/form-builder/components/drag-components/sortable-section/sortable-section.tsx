@@ -61,7 +61,7 @@ export default function SortableSection({ section, onLockItem, isOver }: Sortabl
             id: section.id,
             description: section.description,
             title: section.title,
-            columns: section.columns
+            columns: section.columns?.toString()
           } as EditSectionForm)
         }
       />
