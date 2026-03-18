@@ -54,7 +54,7 @@ export function DialogDeleteInput({ visible, close, data, deleteInput }: Props) 
           </AlertDialogCancel>
 
           <AlertDialogAction
-            className='bg-destructive text-destructive-foreground hover:bg-destructive/90 text-white'
+            className='bg-red-400 text-destructive-foreground hover:bg-destructive/90 text-white'
             disabled={isLoading}
             onClick={handleDelete}
           >

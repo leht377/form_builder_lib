@@ -7,6 +7,7 @@ Libreria React para crear y renderizar formularios dinamicos.
 - React 18 o 19
 - React DOM 18 o 19
 - @tanstack/react-query v5
+- Tailwind CSS v4 configurado en la app host
 
 ## Instalacion
 
@@ -47,6 +48,16 @@ function App() {
   )
 }
 ```
+
+## Configuracion Tailwind en la app host
+
+En el CSS global de la app host (donde tengas `@import "tailwindcss";`), agrega:
+
+```css
+@source "../../node_modules/sdi-form-builder/dist/**/*.{js,jsx,ts,tsx,mjs,cjs}";
+```
+
+Esto permite que Tailwind de la app host detecte las clases usadas por la libreria.
 
 ## API publica
 

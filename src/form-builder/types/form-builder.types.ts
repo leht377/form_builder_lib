@@ -183,7 +183,7 @@ export interface AddQuestiontoFormRequets {
 export const EditSectionFormSchema = z.object({
   id: z.string(),
   title: z.string(),
-  columns: z.number(),
+  columns: z.string(),
   description: z.string().optional()
 })
 export interface Answers {
