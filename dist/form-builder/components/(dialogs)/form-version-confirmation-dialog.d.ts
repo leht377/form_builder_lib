@@ -5,7 +5,8 @@ interface FormVersionConfirmationDialogProps {
     title: string;
     description?: string;
     isLoading?: boolean;
+    hasHandleCreateNewVersion?: boolean;
 }
-export default function FormVersionConfirmationDialog({ open, onOpenChange, onConfirm, title, description, isLoading }: FormVersionConfirmationDialogProps): import("react/jsx-runtime").JSX.Element;
+export default function FormVersionConfirmationDialog({ open, onOpenChange, onConfirm, title, description, isLoading, hasHandleCreateNewVersion }: FormVersionConfirmationDialogProps): import("react/jsx-runtime").JSX.Element;
 export {};
 //# sourceMappingURL=form-version-confirmation-dialog.d.ts.map
