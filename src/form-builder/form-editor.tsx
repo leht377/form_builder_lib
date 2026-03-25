@@ -20,7 +20,7 @@ import {
   verticalListSortingStrategy
 } from '@dnd-kit/sortable'
 import { useState } from 'react'
-import type { EditInputForm, EditSectionForm, Form, Section } from './types/form-builder.types'
+import type { EditInputForm, EditSectionForm, Section } from './types/form-builder.types'
 import NavInputsCreator from './components/nav-inputs-creator'
 import FormAreaDroppable from './components/drag-components/form-area-droppable'
 import SortableSection from './components/drag-components/sortable-section/sortable-section'
@@ -34,21 +34,20 @@ import { Loader } from 'lucide-react'
 import RenderDialog from './components/(dialogs)/render-dialog'
 import FormVersionConfirmationDialog from './components/(dialogs)/form-version-confirmation-dialog'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import useCreateNewVersion from './hooks/use-create-new-version'
 import OverlayContent from './components/overlay-content'
 
 interface Props {
   id: string
-  onCreateNewVersion?: (form: Form) => void
+  handleCreateNewVersion?: () => void |  Promise<void>,
+  isLoadig  ?: boolean
 }
 
 
-const FormEditor = ({ id, onCreateNewVersion }: Props) => {
+const FormEditor = ({ id, handleCreateNewVersion, isLoadig }: Props) => {
   const { sections, isLoading: isLoadingForm, refetch } = useShowForm(id)
 
   const { data } = useApiVerifyFormHaveAnswers(id)
   const hasAnswers = Boolean(data?.attributes.has_answers)
-  const { createNewVersion, isPending: isCreatingNewVersion } = useCreateNewVersion()
   const { createSection, reorderSection, deleteSection, updateSection, isLoadingSection } =
     useManageFormSections({
       formId: id,
@@ -69,7 +68,7 @@ const FormEditor = ({ id, onCreateNewVersion }: Props) => {
 
   // Deshabilitar drag and drop cuando hay operaciones en curso
   const isPerformingAction =
-    isLoadingSection || isLoadingInput || isLoadingForm || isCreatingNewVersion
+    isLoadingSection || isLoadingInput || isLoadingForm || isLoadig
 
   const { paletteItems } = useListPaletteItems()
 
@@ -105,10 +104,6 @@ const FormEditor = ({ id, onCreateNewVersion }: Props) => {
       if (section.items.some((item) => item.id === id)) return section.id
     }
     return null
-  }
-
-  const handleCreateNewVersion = () => {
-    createNewVersion({ id, has_answers: hasAnswers }, onCreateNewVersion)
   }
 
   const findSectionByItemId = (itemId: string) =>
@@ -234,7 +229,9 @@ const FormEditor = ({ id, onCreateNewVersion }: Props) => {
         sectionId: Number(sectionId.split('-')[0]),
         is_locked: isLock
       })
-    } catch {}
+    } catch {
+      console.error('Error al actualizar el estado de bloqueo del item')
+    }
   }
 
   const getOverSection = () => {
@@ -378,6 +375,7 @@ const FormEditor = ({ id, onCreateNewVersion }: Props) => {
       />
       <FormVersionConfirmationDialog
         open={showConfirmDialog}
+        hasHandleCreateNewVersion={Boolean(handleCreateNewVersion)}
         onOpenChange={setShowConfirmDialog}
         onConfirm={handleConfirmAction}
         title='¿Crear nueva versión del formulario?'

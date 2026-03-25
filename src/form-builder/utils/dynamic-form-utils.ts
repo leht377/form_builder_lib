@@ -352,8 +352,8 @@ export const formBuilderSchema = (
           ? toBoolean(q.attributes.config?.multiple)
           : undefined,
         size: q.attributes.config?.size ? Number(q.attributes.config?.size) : undefined,
-        formatThousands: q.attributes.config?.formatThousands
-          ? toBoolean(q.attributes.config?.formatThousands)
+        formatThousands: q.attributes.config?.format_curency
+          ? toBoolean(q.attributes.config?.format_curency)
           : undefined
       }
     }
