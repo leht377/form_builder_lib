@@ -15,7 +15,7 @@ function App() {
         <FormEditor id={curr} onCreateNewVersion={(v) => setCurr(v.id.toString())} />
       </div>
       <div className='min-h-screen w-full py-8 px-4 overflow-x-hidden'>
-        <DynamicForm formId={"109"} formResponseId='1459' />
+        <DynamicForm formId={curr} formResponseId='1459' />
       </div>
     </>
   )
