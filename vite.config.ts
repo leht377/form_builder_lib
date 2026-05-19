@@ -14,7 +14,7 @@ export default defineConfig({
     },
     copyPublicDir: false,
     rollupOptions: {
-      external: ['react', 'react-dom'],
+      external: ['react', 'react-dom', "radix-ui", "shadcn", "react/jsx-runtime"],
       output: {
         globals: {
           react: 'React',
