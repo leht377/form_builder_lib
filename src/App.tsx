@@ -7,7 +7,7 @@ import DynamicForm from './form-builder/dynamic-form'
 // import FormBuilder from "./form-builder/form-builder".
 
 function App() {
-  const [curr, setCurr] = useState('64')
+  const [curr, setCurr] = useState('62')
   const handleCreateNewVersion = async () => {
     setCurr((prev) => String(Number(prev) + 1))
   }

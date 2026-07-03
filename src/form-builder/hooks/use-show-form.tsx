@@ -27,7 +27,7 @@ const useShowForm = (id: string) => {
             description: q.attributes.description ?? '',
             placeholder: q.attributes?.config?.placeholder ?? '',
             question_type_id: q.attributes.form_question_type_id?.toString(),
-            config: q.attributes.config,
+            config: Array.isArray(q.attributes.config) ? {} : q.attributes.config,
             isLock: q.attributes.is_locked
           })
         ),
