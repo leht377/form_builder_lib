@@ -1,3 +1,4 @@
+import * as React from 'react';
 import type { NormalizedFile } from '../../form-builder/types/form-builder.types';
 interface FileDropzoneProps {
     value: NormalizedFile[];
@@ -9,6 +10,6 @@ interface FileDropzoneProps {
     className?: string;
     readOnly?: boolean;
 }
-export declare function FileInput({ value, onChange, accept, multiple, maxFiles, disabled, className, readOnly }: FileDropzoneProps): import("react/jsx-runtime").JSX.Element;
+export declare function FileInput({ value, onChange, accept, multiple, maxFiles, disabled, className, readOnly }: FileDropzoneProps): React.JSX.Element;
 export {};
 //# sourceMappingURL=file-input.d.ts.map

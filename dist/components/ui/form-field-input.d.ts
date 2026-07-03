@@ -34,6 +34,6 @@ interface Props<T extends FieldValues> {
     valid?: boolean;
     formatThousands?: boolean;
 }
-declare const FormFieldInput: <T extends FieldValues>({ control, name, label, placeholder, description, type, className, isRequired, isMultiSelect, isSelectClearable, options, step, disabled, readOnly, isLoading, multiple, accept, max, min, ref, editorClassName, height, width, formatThousands }: Props<T>) => import("react/jsx-runtime").JSX.Element;
+declare const FormFieldInput: <T extends FieldValues>({ control, name, label, placeholder, description, type, className, isRequired, isMultiSelect, isSelectClearable, options, step, disabled, readOnly, isLoading, multiple, accept, max, min, ref, editorClassName, height, width, formatThousands }: Props<T>) => React.JSX.Element;
 export default FormFieldInput;
 //# sourceMappingURL=form-field-input.d.ts.map

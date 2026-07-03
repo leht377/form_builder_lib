@@ -6,6 +6,6 @@ interface DraggableInputProps {
     label: string;
     icon?: IconName;
 }
-export default function DraggableInput({ id, label, icon }: DraggableInputProps): import("react/jsx-runtime").JSX.Element;
+export default function DraggableInput({ id, label, icon }: DraggableInputProps): import("react").JSX.Element;
 export {};
 //# sourceMappingURL=draggable-Input.d.ts.map

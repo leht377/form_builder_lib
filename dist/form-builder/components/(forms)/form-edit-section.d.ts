@@ -4,6 +4,6 @@ interface Props {
     onsubmit?: (d: EditSectionForm) => Promise<void> | void;
     closeDialog: () => void;
 }
-declare const FormEditSection: ({ onsubmit, closeDialog, values }: Props) => import("react/jsx-runtime").JSX.Element;
+declare const FormEditSection: ({ onsubmit, closeDialog, values }: Props) => import("react").JSX.Element;
 export default FormEditSection;
 //# sourceMappingURL=form-edit-section.d.ts.map

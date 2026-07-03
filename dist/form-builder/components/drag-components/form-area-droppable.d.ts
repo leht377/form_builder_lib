@@ -4,6 +4,6 @@ interface FormAreaDroppableProps {
     isOver: boolean;
     isEmpty?: boolean;
 }
-export default function FormAreaDroppable({ children, isOver }: FormAreaDroppableProps): import("react/jsx-runtime").JSX.Element;
+export default function FormAreaDroppable({ children, isOver }: FormAreaDroppableProps): import("react").JSX.Element;
 export {};
 //# sourceMappingURL=form-area-droppable.d.ts.map

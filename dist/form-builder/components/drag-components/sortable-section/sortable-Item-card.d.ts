@@ -4,6 +4,6 @@ interface Props {
     onLock: () => void;
     onOpenSettings: () => void;
 }
-export default function SortableItemCard({ item, onRemove, onLock, onOpenSettings }: Props): import("react/jsx-runtime").JSX.Element;
+export default function SortableItemCard({ item, onRemove, onLock, onOpenSettings }: Props): import("react").JSX.Element;
 export {};
 //# sourceMappingURL=sortable-Item-card.d.ts.map

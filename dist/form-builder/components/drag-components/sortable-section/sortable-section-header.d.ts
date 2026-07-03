@@ -6,6 +6,6 @@ interface Props {
     onRemoveSection: () => void;
     onOpenSettings: () => void;
 }
-export default function SortableSectionHeader({ section, attributes, listeners, onRemoveSection, onOpenSettings }: Props): import("react/jsx-runtime").JSX.Element;
+export default function SortableSectionHeader({ section, attributes, listeners, onRemoveSection, onOpenSettings }: Props): import("react").JSX.Element;
 export {};
 //# sourceMappingURL=sortable-section-header.d.ts.map

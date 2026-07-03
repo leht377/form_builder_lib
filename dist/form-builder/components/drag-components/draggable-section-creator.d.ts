@@ -4,6 +4,6 @@ interface DraggableSectionCreatorProps {
     label: string;
     icon?: IconName;
 }
-export default function DraggableSectionCreator({ id, label, icon }: DraggableSectionCreatorProps): import("react/jsx-runtime").JSX.Element;
+export default function DraggableSectionCreator({ id, label, icon }: DraggableSectionCreatorProps): import("react").JSX.Element;
 export {};
 //# sourceMappingURL=draggable-section-creator.d.ts.map
