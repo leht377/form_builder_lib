@@ -5,6 +5,6 @@ interface FormBuilderProviderProps extends PropsWithChildren {
     queryClient?: unknown;
     queryClientConfig?: unknown;
 }
-export declare const FormBuilderProvider: ({ config, children }: FormBuilderProviderProps) => import("react/jsx-runtime").JSX.Element;
+export declare const FormBuilderProvider: ({ config, children }: FormBuilderProviderProps) => import("react").JSX.Element;
 export {};
 //# sourceMappingURL=form-builder-provider.d.ts.map

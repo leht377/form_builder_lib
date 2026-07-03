@@ -5,6 +5,6 @@ interface Props extends DynamicFormRenderProps {
     formId: string;
     formResponseId: string;
 }
-declare const DynamicForm: ({ formId, formResponseId, ...renderFormProps }: Props) => import("react/jsx-runtime").JSX.Element;
+declare const DynamicForm: ({ formId, formResponseId, ...renderFormProps }: Props) => import("react").JSX.Element;
 export default DynamicForm;
 //# sourceMappingURL=dynamic-form.d.ts.map

@@ -19,6 +19,6 @@ interface DynamicFormProps {
     handleDeleteFileUploaded?: (uri: string) => Promise<void>;
     isReadonly?: boolean;
 }
-declare const RenderForm: ({ formSchema, onSubmit, className, initialValues, buttonText, isSending, sectionClassName, questionContainerClassName, titleContainerClassName, error, disabledSubmit, titleSectionContainerClassName, specialFormConfig, disabled, isReadonly }: DynamicFormProps) => import("react/jsx-runtime").JSX.Element;
+declare const RenderForm: ({ formSchema, onSubmit, className, initialValues, buttonText, isSending, sectionClassName, questionContainerClassName, titleContainerClassName, error, disabledSubmit, titleSectionContainerClassName, specialFormConfig, disabled, isReadonly }: DynamicFormProps) => React.JSX.Element;
 export default RenderForm;
 //# sourceMappingURL=render-form.d.ts.map

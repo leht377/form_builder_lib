@@ -5,6 +5,6 @@ interface Props {
     description?: string;
     children?: React.ReactNode;
 }
-declare const SheetConfig: ({ visible, close, title, description, children }: Props) => import("react/jsx-runtime").JSX.Element;
+declare const SheetConfig: ({ visible, close, title, description, children }: Props) => import("react").JSX.Element;
 export default SheetConfig;
 //# sourceMappingURL=sheet-config.d.ts.map

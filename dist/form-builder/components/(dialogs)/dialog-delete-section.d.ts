@@ -7,6 +7,6 @@ interface Props {
     };
     deleteSection: (id: string) => Promise<void> | void;
 }
-export declare function DialogDeleteSection({ visible, close, data, deleteSection }: Props): import("react/jsx-runtime").JSX.Element;
+export declare function DialogDeleteSection({ visible, close, data, deleteSection }: Props): import("react").JSX.Element;
 export {};
 //# sourceMappingURL=dialog-delete-section.d.ts.map
