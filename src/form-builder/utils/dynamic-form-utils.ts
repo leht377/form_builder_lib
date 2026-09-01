@@ -25,7 +25,6 @@ const normalizeDate = (date: string) => {
   return `${y}-${m}-${d}`
 }
 
-
 export const mapResponseToAnswers = (
   response: Record<string, any>,
   getId: (key: number) => number | null
@@ -37,7 +36,6 @@ export const mapResponseToAnswers = (
       key: mapperAnwserValueSaveProgress(value)
     }
   }))
-
 
 export function getFieldError(
   error: FieldError | Merge<FieldError, FieldErrorsImpl<any>> | undefined
@@ -322,8 +320,9 @@ export const formBuilderSchema = (
     let maxValue: number | string | undefined //string para el caso de fechas
 
     if (typeName === 'date') {
+      const isMaxToday = q.attributes.config?.max_date === true
       minValue = rawMin ? rawMin : undefined
-      maxValue = rawMax ? rawMax : undefined
+      maxValue = isMaxToday ? new Date().toISOString().split('T')[0] : rawMax ? rawMax : undefined
     } else {
       minValue =
         isAllOptional === 'strict' && q.attributes.is_required && !rawMin

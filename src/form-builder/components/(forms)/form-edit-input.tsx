@@ -48,13 +48,13 @@ const defaultFormValues: EditInputForm = {
   config: {}
 }
 
-const renderDynamicField = (form: any, fieldName: string, type: string) => {
+const renderDynamicField = (form: any, key: string, fieldName: string, type: string) => {
   switch (type) {
     case 'date':
       return (
         <FormFieldInput
           control={form.control}
-          name={`config.${fieldName}`}
+          name={`config.${key}`}
           label={fieldName}
           type='date'
         />
@@ -63,7 +63,7 @@ const renderDynamicField = (form: any, fieldName: string, type: string) => {
       return (
         <FormFieldInput
           control={form.control}
-          name={`config.${fieldName}`}
+          name={`config.${key}`}
           label={fieldName}
           type='text-area'
         />
@@ -72,7 +72,7 @@ const renderDynamicField = (form: any, fieldName: string, type: string) => {
       return (
         <FormFieldInput
           control={form.control}
-          name={`config.${fieldName}`}
+          name={`config.${key}`}
           label={fieldName}
           type='number'
           min={0}
@@ -82,7 +82,7 @@ const renderDynamicField = (form: any, fieldName: string, type: string) => {
       return (
         <FormFieldInput
           control={form.control}
-          name={`config.${fieldName}`}
+          name={`config.${key}`}
           label={fieldName}
           type='switch'
         />
@@ -92,7 +92,7 @@ const renderDynamicField = (form: any, fieldName: string, type: string) => {
       return (
         <Controller
           control={form.control}
-          name={`config.${fieldName}`}
+          name={`config.${key}`}
           render={({ field }) => {
             const value = safeJsonParse(field.value)
 
@@ -106,7 +106,7 @@ const renderDynamicField = (form: any, fieldName: string, type: string) => {
                     styles={ReactSelectCustomStyles}
                     value={value}
                     onChange={(newValue) => {
-                      form.setValue(`config.${fieldName}`, JSON.stringify(newValue))
+                      form.setValue(`config.${key}`, JSON.stringify(newValue))
                     }}
                     onCreateOption={(inputValue) => {
                       // Validar que no exista un valor duplicado
@@ -120,7 +120,7 @@ const renderDynamicField = (form: any, fieldName: string, type: string) => {
                         label: inputValue
                       }
 
-                      form.setValue(`config.${fieldName}`, JSON.stringify([...value, newOption]))
+                      form.setValue(`config.${key}`, JSON.stringify([...value, newOption]))
                     }}
                     placeholder='Agrega opciones...'
                     className='text-sm'
@@ -192,70 +192,70 @@ export default function FormEditInput({
   }, [questionType])
 
   return (
-      <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-6 px-2 py-3'>
-        <Tabs defaultValue='general' className='w-full'>
-          <TabsList className='grid grid-cols-2 mb-4'>
-            <TabsTrigger value='general'>General</TabsTrigger>
-            <TabsTrigger value='config'>Configuración extra</TabsTrigger>
-          </TabsList>
+    <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-6 px-2 py-3'>
+      <Tabs defaultValue='general' className='w-full'>
+        <TabsList className='grid grid-cols-2 mb-4'>
+          <TabsTrigger value='general'>General</TabsTrigger>
+          <TabsTrigger value='config'>Configuración extra</TabsTrigger>
+        </TabsList>
 
-          {/* TAB GENERAL */}
-          <TabsContent value='general' className='space-y-4'>
-            <FormFieldInput
-              control={form.control}
-              name='label'
-              label='Nombre del campo'
-              type='text'
-              placeholder='Ingrese el nombre del campo'
-            />
+        {/* TAB GENERAL */}
+        <TabsContent value='general' className='space-y-4'>
+          <FormFieldInput
+            control={form.control}
+            name='label'
+            label='Nombre del campo'
+            type='text'
+            placeholder='Ingrese el nombre del campo'
+          />
 
-            <FormFieldInput
-              control={form.control}
-              name='description'
-              label='Descripción'
-              type='text-area'
-              placeholder='Ingrese la descripción'
-            />
+          <FormFieldInput
+            control={form.control}
+            name='description'
+            label='Descripción'
+            type='text-area'
+            placeholder='Ingrese la descripción'
+          />
 
-            <FormFieldInput
-              control={form.control}
-              name='required'
-              label='Campo obligatorio'
-              type='switch'
-            />
-          </TabsContent>
+          <FormFieldInput
+            control={form.control}
+            name='required'
+            label='Campo obligatorio'
+            type='switch'
+          />
+        </TabsContent>
 
-          {/* TAB CONFIGURACIÓN EXTRA */}
-          <TabsContent value='config' className='space-y-4'>
-            <div className='space-y-3'>
-              {questionType?.relationships.attributes?.length ? (
-                questionType.relationships.attributes.map((attr) => {
-                  const { key, type } = attr.attributes
-                  return (
-                    <React.Fragment key={attr.id}>
-                      {renderDynamicField(form, key, type)}
-                    </React.Fragment>
-                  )
-                })
-              ) : (
-                <p className='text-sm text-muted-foreground'>
-                  No hay configuraciones adicionales para este tipo.
-                </p>
-              )}
-            </div>
-          </TabsContent>
-        </Tabs>
+        {/* TAB CONFIGURACIÓN EXTRA */}
+        <TabsContent value='config' className='space-y-4'>
+          <div className='space-y-3'>
+            {questionType?.relationships.attributes?.length ? (
+              questionType.relationships.attributes.map((attr) => {
+                const { key, type, description } = attr.attributes
+                return (
+                  <React.Fragment key={attr.id}>
+                    {renderDynamicField(form, key, description || key, type)}
+                  </React.Fragment>
+                )
+              })
+            ) : (
+              <p className='text-sm text-muted-foreground'>
+                No hay configuraciones adicionales para este tipo.
+              </p>
+            )}
+          </div>
+        </TabsContent>
+      </Tabs>
 
-        <Separator />
+      <Separator />
 
-        <div className='flex justify-end gap-2 pb-2'>
-          <Button type='button' variant='outline' disabled={isLoading} onClick={closeDialog}>
-            Cancelar
-          </Button>
-          <Button type='submit' disabled={isLoading}>
-            {isLoading ? <Loader className='animate-spin' /> : 'Guardar'}
-          </Button>
-        </div>
-      </form>
+      <div className='flex justify-end gap-2 pb-2'>
+        <Button type='button' variant='outline' disabled={isLoading} onClick={closeDialog}>
+          Cancelar
+        </Button>
+        <Button type='submit' disabled={isLoading}>
+          {isLoading ? <Loader className='animate-spin' /> : 'Guardar'}
+        </Button>
+      </div>
+    </form>
   )
 }
