@@ -15,7 +15,7 @@ export const FormBuilderProvider = ({
   return (
     <FormBuilderConfigProvider config={config}>
       {children}
-      <Toaster />
+      <Toaster className="sdi-form-builder-root" />
     </FormBuilderConfigProvider>
   )
 }

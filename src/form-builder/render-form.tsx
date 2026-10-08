@@ -65,7 +65,7 @@ const RenderForm = ({
   }, [error, form.setError])
 
   return (
-    <section>
+    <section className='sdi-form-builder-root w-full'>
       {/* Header */}
       {/* <pre>{JSON.stringify(form.formState.errors, null, 2)}</pre> */}
       <div className={cn('mb-7', titleContainerClassName)}>

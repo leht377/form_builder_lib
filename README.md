@@ -1,84 +1,170 @@
-# sdi-form-builder
+# SDI Form Builder (`sdi-form-builder`)
 
-Libreria React para crear y renderizar formularios dinamicos.
+Librería de componentes React para la creación, edición visual (drag-and-drop) y renderizado de formularios dinámicos, 100% encapsulada y aislada para funcionar sin fricción en cualquier aplicación **React / Next.js (App Router & Pages)**.
 
-## Requisitos
+---
 
-- React 18 o 19
-- React DOM 18 o 19
-- @tanstack/react-query v5
-- Tailwind CSS v4 configurado en la app host
+## ✨ Características Principales
 
-## Instalacion
+- 🛡️ **Aislamiento Total de Estilos (Zero CSS Collisions):** Todos los estilos y variables CSS están encapsulados bajo el namespace `.sdi-form-builder-root`, evitando que las reglas o variables de Tailwind (`--background`, `--foreground`, `--primary`, etc.) colisionen con los estilos globales de tu aplicación anfitriona.
+- 🎨 **Soporte Nativo de Modo Oscuro:** Compatible con modo claro y oscuro (`.dark`), sincronizándose automáticamente con el tema de tu aplicación.
+- 🧩 **Componentes Listos para Usar:**
+  - `FormEditor`: Editor interactivo con drag-and-drop (`@dnd-kit`) para organizar secciones y campos.
+  - `RenderForm`: Renderizador de formularios validado con Zod y React Hook Form.
+  - `DynamicForm`: Componente integrado que consulta la API, carga respuestas previas y gestiona el envío de forma autónoma.
+- 📦 **Empaquetado Moderno:** Bundles optimizados en ESM (`dist/index.js`), CommonJS (`dist/index.cjs`) y tipos de TypeScript integrados (`dist/index.d.ts`).
+- ⚡ **Compatibilidad SSR / Next.js:** Incluye directivas `'use client'` y polyfills seguros para entornos de renderizado en servidor.
+
+---
+
+## 📦 Instalación
 
 ```bash
-npm install sdi-form-builder @tanstack/react-query react react-dom
+npm install sdi-form-builder
+# o con pnpm
+pnpm add sdi-form-builder
+# o con yarn
+yarn add sdi-form-builder
 ```
 
-## Uso rapido
+### Requisitos Previos (`peerDependencies`)
+
+- **React:** `>=18.0.0`
+- **React DOM:** `>=18.0.0`
+- **Radix UI:** `^1`
+
+---
+
+## 🚀 Inicio Rápido
+
+### 1. Importación de Estilos
+
+Importa la hoja de estilos de la librería una sola vez en el archivo raíz de tu aplicación (ej. `layout.tsx`, `_app.tsx`, `App.tsx` o `main.tsx`):
 
 ```tsx
-import { QueryClient } from '@tanstack/react-query'
-import {
-  FormBuilderProvider,
-  FormEditor,
-  RenderForm,
-  formBuilderSchema,
-  type Form
-} from 'sdi-form-builder'
 import 'sdi-form-builder/styles.css'
+// o alternativamente:
+// import 'sdi-form-builder/style.css'
+```
 
-const queryClient = new QueryClient()
+> [!NOTE]
+> **No requieres configurar `@source` en Tailwind de tu app host.** Los estilos ya vienen pre-compilados y aislados dentro del bundle de la librería.
 
-function App() {
-  const form = {} as Form
+---
 
+### 2. Configurar el Proveedor (`FormBuilderProvider`)
+
+Envuelve tu árbol de componentes con `FormBuilderProvider` para configurar los accesos de API y opciones de sesión:
+
+```tsx
+import { FormBuilderProvider } from 'sdi-form-builder'
+
+export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <FormBuilderProvider
-      config={{ apiBaseUrl: 'https://api.example.com' }}
-      queryClient={queryClient}
+      config={{
+        apiBaseUrl: 'https://api.tuempresa.com',
+        token: 'tu_token_aqui',
+        userId: '123'
+      }}
     >
-      <FormEditor id={form.id.toString()} onCreateNewVersion={() => {}} />
-      <RenderForm
-        formSchema={formBuilderSchema(form, 'strict')}
-        onSubmit={(values) => console.log(values)}
-        buttonText='Enviar'
-      />
+      {children}
     </FormBuilderProvider>
   )
 }
 ```
 
-## Configuracion Tailwind en la app host
+---
 
-En el CSS global de la app host (donde tengas `@import "tailwindcss";`), agrega:
+### 3. Uso de los Componentes
 
-```css
-@source "../../node_modules/sdi-form-builder/dist/**/*.{js,jsx,ts,tsx,mjs,cjs}";
+#### A. Editor de Formularios (`FormEditor`)
+
+Permite diseñar visualmente las secciones y preguntas del formulario mediante arrastrar y soltar:
+
+```tsx
+import { FormEditor } from 'sdi-form-builder'
+
+export default function EditFormPage({ params }: { params: { id: string } }) {
+  return (
+    <div className="p-6">
+      <FormEditor
+        id={params.id}
+        handleCreateNewVersion={async () => {
+          console.log('Nueva versión creada')
+        }}
+      />
+    </div>
+  )
+}
 ```
 
-Esto permite que Tailwind de la app host detecte las clases usadas por la libreria.
+#### B. Renderizador de Formulario (`RenderForm`)
 
-## API publica
+Renderiza un formulario a partir de un esquema estructurado:
 
-- `FormBuilderProvider`
-- `FormEditor`
-- `RenderForm`
-- `formBuilderSchema`
-- `mapDynamicFormAnswerToFormAnswer`
-- tipo `Form`
+```tsx
+import { RenderForm, formBuilderSchema, type Form } from 'sdi-form-builder'
 
-## Scripts
+interface Props {
+  formData: Form
+}
 
-- `pnpm dev`: entorno de desarrollo con Vite
-- `pnpm build`: genera bundles ESM/CJS y tipos en `dist/`
-- `pnpm lint`: ejecuta ESLint
+export default function ViewForm({ formData }: Props) {
+  const schema = formBuilderSchema(formData, 'strict')
 
-## Publicacion
+  const handleSubmit = (values: Record<string, unknown>) => {
+    console.log('Formulario enviado:', values)
+  }
 
-Antes de publicar:
+  return (
+    <RenderForm
+      formSchema={schema}
+      onSubmit={handleSubmit}
+      buttonText="Guardar Respuestas"
+    />
+  )
+}
+```
 
-1. Actualiza `version` en `package.json`.
-2. Ejecuta `pnpm build`.
-3. Verifica contenido del paquete con `npm pack --dry-run`.
-4. Publica con `npm publish`.
+#### C. Formulario Dinámico Conectado (`DynamicForm`)
+
+Obtiene el formulario y sus respuestas desde la API, gestionando automáticamente el estado de carga, errores y mutaciones:
+
+```tsx
+import { DynamicForm } from 'sdi-form-builder'
+
+export default function DynamicFormPage({ formId, responseId }: { formId: string; responseId: string }) {
+  return (
+    <DynamicForm
+      formId={formId}
+      formResponseId={responseId}
+      buttonText="Actualizar Información"
+    />
+  )
+}
+```
+
+---
+
+## 🛠️ API Pública Exportada
+
+| Exportación | Tipo | Descripción |
+| :--- | :--- | :--- |
+| `FormEditor` | Componente | Editor drag-and-drop de secciones y campos |
+| `RenderForm` | Componente | Renderizador de esquemas de formularios |
+| `DynamicForm` | Componente | Formulario auto-conectado a endpoints de API |
+| `FormBuilderProvider` | Proveedor | Contexto global de configuración para la librería |
+| `formBuilderSchema` | Función | Normalizador y constructor de esquemas de validación |
+| `mapDynamicFormAnswerToFormAnswer` | Función | Utilidad para mapeo y conversión de respuestas |
+| `type Form` | Tipo | Interfaz del modelo de formulario |
+
+---
+
+## 🧑‍💻 Scripts de Desarrollo
+
+- `pnpm dev`: Inicia el servidor de desarrollo local con Vite.
+- `pnpm build`: Compila los bundles ESM, CJS, tipos `.d.ts` y CSS encapsulado en la carpeta `dist/`.
+- `pnpm typecheck`: Valida el tipado en TypeScript sin emitir archivos (`tsc --noEmit`).
+- `pnpm lint`: Ejecuta el análisis estático de código con ESLint.
+

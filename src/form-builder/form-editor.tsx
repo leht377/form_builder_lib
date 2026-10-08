@@ -285,7 +285,7 @@ const FormEditor = ({ id, handleCreateNewVersion, isLoadig }: Props) => {
         onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
       >
-        <div className='min-h-[80vh] relative'>
+        <div className='sdi-form-builder-root min-h-[80vh] relative'>
           {/* Overlay de carga cuando hay operaciones en curso */}
           {isPerformingAction && (
             <div className='absolute inset-0 bg-white/60 backdrop-blur-[2px] z-50 flex items-center justify-center rounded-xl'>

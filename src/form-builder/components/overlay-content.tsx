@@ -16,7 +16,7 @@ export default function OverlayContent({
 
   return (
     <div
-      className={`flex items-center gap-2 px-4 py-2 rounded-xl border shadow-lg scale-105 ${
+      className={`sdi-form-builder-root flex items-center gap-2 px-4 py-2 rounded-xl border shadow-lg scale-105 ${
         isSectionDrag ? 'bg-orange-100 border-orange-400' : 'bg-white'
       }`}
     >
